@@ -1,0 +1,8 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+http.server: 
+  port: 8080
+  acceptors: 2
+  workers: 100

@@ -1,0 +1,72 @@
+
+# 日志配置
+logging: 
+  config: classpath:log4j2-spring.xml
+
+# 容器配置
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+    session.timeout: 0
+  tomcat: 
+    uri-encoding: UTF-8
+    accept-count: 512
+    min-spare-threads: 10
+    max-connections: 10000
+    max-threads: 500
+    accesslog: 
+      enabled: true
+      buffered: true
+      directory: /usr/local/logs/ddd/
+      file-date-format: .yyyy-MM-dd
+      pattern: common
+      prefix: access_log
+      request-attributes-enabled: true
+      rotate: true
+      suffix: .log
+      background-processor-delay: 10s
+
+# spring boot 配置
+spring: 
+  mvc: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    servlet.load-on-startup: 1
+    throw-exception-if-no-handler-found: true
+  resources: 
+    add-mappings: false
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+  servlet: 
+    multipart: 
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 24MB
+      location: /usr/local/logs/ddd/
+  datasource: 
+    url: 'jdbc:mysql://192.168.140.210:3306/cluster_0?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    dbcp2: 
+      max-active: 1000
+      initial-size: 10
+      max-idle: 50
+      max-wait: 60000
+      validation-query: select 1
+      test-while-idle: true
+      test-on-borrow: false
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 1800000
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+
+# mybatis 配置
+mybatis: 
+  mapper-locations: classpath:org/lushen/mrh/ddd/infrastructure/mybatis/mapping/*.xml
+  type-aliases-package: org.lushen.mrh.ddd.infrastructure.mybatis.model
+  type-handlers-package: org.lushen.mrh.ddd.infrastructure.mybatis.handler
+
+

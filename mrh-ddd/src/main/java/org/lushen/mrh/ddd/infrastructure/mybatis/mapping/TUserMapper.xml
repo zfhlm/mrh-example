@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lushen.mrh.ddd.infrastructure.mybatis.mapper.TUserMapper">
+
+	<resultMap id="BaseResultMap" type="org.lushen.mrh.ddd.infrastructure.mybatis.model.TUser">
+		<id column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user" jdbcType="VARCHAR" property="createUser" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+		<result column="version" jdbcType="INTEGER" property="version" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		user_id, name, create_time, create_user, update_time, update_user, version
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from t_user where user_id = #{userId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_user where user_id = #{userId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insert" parameterType="org.lushen.mrh.ddd.infrastructure.mybatis.model.TUser">
+		insert into t_user (
+			user_id, 
+			name, 
+			create_time,
+			create_user, 
+			update_time, 
+			update_user,
+			version
+		) values (
+			#{userId,jdbcType=INTEGER}, 
+			#{name,jdbcType=VARCHAR},
+			#{createTime,jdbcType=TIMESTAMP},
+			#{createUser,jdbcType=VARCHAR}, 
+			#{updateTime,jdbcType=TIMESTAMP}, 
+			#{updateUser,jdbcType=VARCHAR},
+			#{version,jdbcType=INTEGER}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="org.lushen.mrh.ddd.infrastructure.mybatis.model.TUser">
+		update t_user
+		set name = #{name,jdbcType=VARCHAR},
+			create_time = #{createTime,jdbcType=TIMESTAMP},
+			create_user = #{createUser,jdbcType=VARCHAR},
+			update_time = #{updateTime,jdbcType=TIMESTAMP},
+			update_user = #{updateUser,jdbcType=VARCHAR},
+			version = #{version,jdbcType=INTEGER}
+		where user_id = #{userId,jdbcType=INTEGER}
+	</update>
+
+</mapper>
