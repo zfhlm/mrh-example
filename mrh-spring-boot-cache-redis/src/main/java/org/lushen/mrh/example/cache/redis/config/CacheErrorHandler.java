@@ -35,6 +35,18 @@ public class CacheErrorHandler implements org.springframework.cache.interceptor.
 
 	private void rethrowOrDoLog(RuntimeException cause) {
 		log.error(cause.getMessage());
+		if(cause instanceof NotSupportCommandException) {
+			throw cause;
+		}
+	}
+
+	@SuppressWarnings("serial")
+	static class NotSupportCommandException extends RuntimeException {
+
+		public NotSupportCommandException(String message) {
+			super(message);
+		}
+
 	}
 
 }

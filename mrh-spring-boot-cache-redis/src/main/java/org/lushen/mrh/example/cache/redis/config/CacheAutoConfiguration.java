@@ -2,6 +2,7 @@ package org.lushen.mrh.example.cache.redis.config;
 
 import java.time.Duration;
 
+import org.lushen.mrh.example.cache.redis.config.CacheErrorHandler.NotSupportCommandException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
@@ -61,7 +62,7 @@ public class CacheAutoConfiguration {
 		RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory, new BatchStrategy() {
 			@Override
 			public long cleanCache(RedisConnection connection, String name, byte[] pattern) {
-				throw new RuntimeException(String.format("Not support redis command :: keys %s", new String(pattern)));
+				throw new NotSupportCommandException(String.format("Not support redis command :: keys %s", new String(pattern)));
 			}
 		});
 		RedisCacheConfiguration defaultCacheConfiguration = RedisCacheConfiguration
