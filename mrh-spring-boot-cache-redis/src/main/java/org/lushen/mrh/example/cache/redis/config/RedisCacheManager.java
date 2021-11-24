@@ -41,7 +41,7 @@ public class RedisCacheManager extends org.springframework.data.redis.cache.Redi
 		return new RedisCountDownLatchCache(name, this.cacheWriter, cacheConfig != null ? cacheConfig : this.defaultCacheConfig);
 	}
 
-	private class RedisCountDownLatchCache extends RedisCache {
+	private static class RedisCountDownLatchCache extends RedisCache {
 
 		private final ConcurrentHashMap<Object, CountDownLatch> countDownLatchs = new ConcurrentHashMap<Object, CountDownLatch>();
 

@@ -1,4 +1,4 @@
-package org.lushen.mrh.example.cache.redis.config;
+package org.lushen.mrh.example.cache.redis.config.serializer;
 
 import java.security.Key;
 import java.security.SecureRandom;

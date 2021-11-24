@@ -1,5 +1,7 @@
 package org.lushen.mrh.example.cache.redis.controller;
 
+import org.lushen.mrh.example.cache.redis.config.CacheEnforceMiss;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class TestController {
+	
+	@Autowired
+	private TestService testService;
 
 	@Cacheable(cacheNames="cache.test1")
 	@GetMapping(path="get")
@@ -17,6 +22,18 @@ public class TestController {
 		TestVo vo = new TestVo();
 		vo.setId(1);
 		vo.setName("zhangsan");
+		System.err.println(vo);
+		return vo;
+	}
+
+	@CacheEnforceMiss
+	@GetMapping(path="enforce")
+	public TestVo enforce() {
+		TestVo vo = new TestVo();
+		vo.setId(1);
+		vo.setName("zhangsan");
+		System.err.println(vo);
+		testService.test();
 		return vo;
 	}
 
@@ -48,6 +65,7 @@ public class TestController {
 		TestVo vo = new TestVo();
 		vo.setId(1);
 		vo.setName("zhangsan");
+		System.err.println(vo);
 		return vo;
 	}
 
@@ -57,6 +75,7 @@ public class TestController {
 		TestVo vo = new TestVo();
 		vo.setId(1);
 		vo.setName("zhangsan");
+		System.err.println(vo);
 		return vo;
 	}
 
@@ -66,6 +85,7 @@ public class TestController {
 		TestVo vo = new TestVo();
 		vo.setId(1);
 		vo.setName("zhangsan");
+		System.err.println(vo);
 		return vo;
 	}
 

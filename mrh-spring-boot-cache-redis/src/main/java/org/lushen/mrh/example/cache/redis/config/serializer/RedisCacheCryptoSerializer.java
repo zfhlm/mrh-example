@@ -1,4 +1,4 @@
-package org.lushen.mrh.example.cache.redis.config;
+package org.lushen.mrh.example.cache.redis.config.serializer;
 
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;

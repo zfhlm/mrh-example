@@ -1,4 +1,4 @@
-package org.lushen.mrh.example.cache.redis.config;
+package org.lushen.mrh.example.cache.redis.config.serializer;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

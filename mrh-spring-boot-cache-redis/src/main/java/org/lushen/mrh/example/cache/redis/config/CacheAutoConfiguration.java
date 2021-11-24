@@ -30,7 +30,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext.Seria
 public class CacheAutoConfiguration {
 
 	/**
-	 * 注册默认缓存key生成器、缓存错误处理器
+	 * 缓存默认组件配置
 	 */
 	@Bean
 	public CachingConfigurer cachingConfigurer() {
@@ -55,7 +55,7 @@ public class CacheAutoConfiguration {
 	}
 
 	/**
-	 * 注册缓存管理器
+	 * 缓存管理器配置
 	 */
 	@Bean
 	public RedisCacheManager redisCacheManager(@Autowired RedisConnectionFactory connectionFactory) {
@@ -71,6 +71,14 @@ public class CacheAutoConfiguration {
 				.entryTtl(Duration.ofSeconds(300L))
 				.serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 		return new org.lushen.mrh.example.cache.redis.config.RedisCacheManager(cacheWriter, defaultCacheConfiguration);
+	}
+
+	/**
+	 * 缓存强制 miss 切面配置
+	 */
+	@Bean
+	public CacheEnforceMissAdvice cacheEnforceMissAdvice() {
+		return new CacheEnforceMissAdvice();
 	}
 
 }

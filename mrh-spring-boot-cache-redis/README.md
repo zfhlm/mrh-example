@@ -15,7 +15,7 @@
 
         建议禁用 @Cachable(allEntries=true)
 
-    缓存序列号问题：
+    缓存序列化问题：
 
         // 自定义 org.springframework.data.redis.serializer.RedisSerializer 可以扩展例如 protobuf、加解密、压缩等
 
@@ -23,6 +23,12 @@
 
         RedisCacheCryptoProvider provider = new RedisCacheCryptoProvider.RedisCacheDes3CryptoProvider("test", "123456");
 
-        RedisCacheCryptoSerializer<Object> serializer = new RedisCacheCryptoSerializer<>(new GenericJackson2JsonRedisSerializer(), provider);
+        RedisCacheCryptoSerializer<Object> serializer = new RedisCacheCryptoSerializer<Object>(new GenericJackson2JsonRedisSerializer(), provider);
 
         RedisCacheConfiguration configuration = RedisCacheConfiguration.serializeValuesWith(SerializationPair.fromSerializer(serializer));
+
+    缓存强制 miss 问题：
+
+        使用注解 @CacheEnforceMiss 强制 miss 缓存
+
+        微服务可以通过上下文进行传递，例如 dubbo filter context，feign http header，然后根据上下文配置 CacheEnforceMissManager
