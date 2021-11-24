@@ -1,0 +1,169 @@
+
+# 日志配置
+logging: 
+  config: classpath:log4j2-spring.xml
+
+# 容器配置
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+    session.timeout: 0
+  tomcat: 
+    uri-encoding: UTF-8
+    accept-count: 512
+    min-spare-threads: 10
+    max-connections: 10000
+    max-threads: 500
+    accesslog: 
+      enabled: true
+      buffered: true
+      directory: /usr/local/logs/test
+      file-date-format: .yyyy-MM-dd
+      pattern: common
+      prefix: access_log
+      request-attributes-enabled: true
+      rotate: true
+      suffix: .log
+      background-processor-delay: 10s
+
+# mybatis 配置
+mybatis: 
+  mapper-locations: classpath:org/lushen/mrh/shardingsphere/test/dao/mapping/*.xml
+  type-aliases-package: org.lushen.mrh.shardingsphere.test.dao.model
+  type-handlers-package: org.lushen.mrh.shardingsphere.test.dao.handler
+
+# sharding jdbc 配置
+spring: 
+  shardingsphere: 
+    props: 
+      sql.show: true
+    datasource: 
+      names: cluster-1-master, cluster-1-slave-1, cluster-1-slave-2, cluster-2-master, cluster-2-slave-1, cluster-2-slave-2
+      cluster-1-master: 
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: 'jdbc:mysql://192.168.140.210:3306/cluster_0?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+        username: root
+        password: 123456
+        max-active: 1000
+        initial-size: 1
+        max-idle: 50
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+        test-on-borrow: false
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 1800000
+        remove-abandoned: true
+        remove-abandoned-timeout: 18
+      cluster-1-slave-1: 
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: 'jdbc:mysql://192.168.140.210:3306/cluster_0?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+        username: root
+        password: 123456
+        max-active: 1000
+        initial-size: 1
+        max-idle: 50
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+        test-on-borrow: false
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 1800000
+        remove-abandoned: true
+        remove-abandoned-timeout: 18
+      cluster-1-slave-2: 
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: 'jdbc:mysql://192.168.140.210:3306/cluster_0?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+        username: root
+        password: 123456
+        max-active: 1000
+        initial-size: 1
+        max-idle: 50
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+        test-on-borrow: false
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 1800000
+        remove-abandoned: true
+        remove-abandoned-timeout: 18
+      cluster-2-master: 
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: 'jdbc:mysql://192.168.140.210:3306/cluster_1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+        username: root
+        password: 123456
+        max-active: 1000
+        initial-size: 1
+        max-idle: 50
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+        test-on-borrow: false
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 1800000
+        remove-abandoned: true
+        remove-abandoned-timeout: 18
+      cluster-2-slave-1: 
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: 'jdbc:mysql://192.168.140.210:3306/cluster_1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+        username: root
+        password: 123456
+        max-active: 1000
+        initial-size: 1
+        max-idle: 50
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+        test-on-borrow: false
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 1800000
+        remove-abandoned: true
+        remove-abandoned-timeout: 18
+      cluster-2-slave-2: 
+        type: org.apache.commons.dbcp2.BasicDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: 'jdbc:mysql://192.168.140.210:3306/cluster_1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+        username: root
+        password: 123456
+        max-active: 1000
+        initial-size: 1
+        max-idle: 50
+        max-wait: 60000
+        validation-query: select 1
+        test-while-idle: true
+        test-on-borrow: false
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 1800000
+        remove-abandoned: true
+        remove-abandoned-timeout: 18
+    sharding: 
+      default-data-source-name: cluster-1
+      binding-tables: t_region, t_permission, t_permission_group, t_role, t_role_permission_group
+      broadcast-tables: t_config
+      master-slave-rules: 
+        cluster-1: 
+          master-data-source-name: cluster-1-master
+          slave-data-source-names: cluster-1-slave-1, cluster-1-slave-2
+          load-balance-algorithm-type: ROUND_ROBIN
+        cluster-2: 
+          master-data-source-name: cluster-2-master
+          slave-data-source-names: cluster-2-slave-1, cluster-2-slave-2
+          load-balance-algorithm-type: ROUND_ROBIN
+      tables: 
+        t_user: 
+          actual-data-nodes: 'cluster-$->{1..2}.t_user'
+          database-strategy: 
+            inline: 
+              sharding-column: 'user_id'
+              algorithm-expression: 'cluster-$->{user_id % 2 + 1}'
+          table-strategy: 
+            inline: 
+              sharding-column: 'user_id'
+              algorithm-expression: 't_user'
+
