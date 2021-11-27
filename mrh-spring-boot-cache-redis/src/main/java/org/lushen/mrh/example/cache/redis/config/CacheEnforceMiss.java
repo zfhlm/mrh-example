@@ -23,4 +23,11 @@ public @interface CacheEnforceMiss {
 	 */
 	boolean value() default true;
 
+	/**
+	 * 是否传递强制 miss 缓存状态，需要额外扩展处理，例如基于 dubbo filter context、spring cloud feign interceptor header 进行传递
+	 * 
+	 * @return
+	 */
+	boolean transfer() default true;
+
 }

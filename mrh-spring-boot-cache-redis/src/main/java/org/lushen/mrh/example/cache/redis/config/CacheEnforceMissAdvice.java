@@ -40,7 +40,7 @@ public class CacheEnforceMissAdvice extends DefaultPointcutAdvisor implements In
 			advisor.setAdvice(new MethodInterceptor() {
 				@Override
 				public Object invoke(MethodInvocation invocation) throws Throwable {
-					if(CacheEnforceManager.isEnforceMiss()) {
+					if(CacheEnforceManager.getInstance().isMiss()) {
 						return invocation.proceed();
 					} else {
 						return advice.invoke(invocation);
@@ -76,11 +76,11 @@ public class CacheEnforceMissAdvice extends DefaultPointcutAdvisor implements In
 			public Object invoke(MethodInvocation invocation) throws Throwable {
 				CacheEnforceMiss annotation = invocation.getMethod().getAnnotation(CacheEnforceMiss.class);
 				if(annotation != null) {
-					String id = CacheEnforceManager.enforce(annotation.value());
+					String id = CacheEnforceManager.getInstance().configure(annotation.value(), annotation.transfer());
 					try {
 						return invocation.proceed();
 					} finally {
-						CacheEnforceManager.release(id);
+						CacheEnforceManager.getInstance().release(id);
 					}
 				} else {
 					return invocation.proceed();
