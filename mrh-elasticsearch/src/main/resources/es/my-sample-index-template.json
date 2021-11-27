@@ -1,0 +1,30 @@
+{
+	"order": 0,
+	"index_patterns": [
+		"my-sample-*"
+	],
+	"settings": {
+		"index": {
+			"number_of_shards": "1",
+			"number_of_replicas": "0",
+			"refresh_interval": "5s"
+		}
+	},
+	"mappings": {
+		"dynamic": "strict",
+		"properties": {
+			"@timestamp": {
+				"type": "date"
+			},
+			"name": {
+				"type": "keyword"
+			},
+			"address": {
+				"type": "text"
+			}
+		}
+	},
+	"aliases": {
+		
+	}
+}
