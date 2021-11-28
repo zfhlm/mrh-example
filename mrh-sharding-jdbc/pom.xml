@@ -81,12 +81,6 @@
 			<version>${org.apache.shardingsphere.version}</version>
 		</dependency>
 
-		<!-- lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-		</dependency>
-
 		<!-- log4j2 -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -106,10 +100,6 @@
 		</dependency>
 
 		<!-- apache commons -->
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
