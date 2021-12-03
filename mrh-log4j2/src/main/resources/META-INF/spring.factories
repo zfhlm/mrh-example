@@ -1,0 +1,3 @@
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+org.lushen.mrh.example.log4j2.Log4j2EnvironmentListener
