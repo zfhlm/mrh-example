@@ -1,0 +1,27 @@
+
+# 日志配置
+logging: 
+  config: classpath:log4j2-spring.xml
+
+# 容器配置
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+    session.timeout: 0
+
+# elasticjob
+elasticjob:
+  regCenter:
+    serverLists: localhost:2181
+    namespace: mrh-elasticjob
+  dump:
+    port: 18080
+  jobs:
+    simpleJob:
+      elasticJobClass: org.lushen.mrh.elasticjob.demo.PrintSimpleJob
+      jobBootstrapBeanName: org.lushen.mrh.elasticjob.demo.PrintSimpleJob
+      cron: 0/5 * * * * ?
+      timeZone: GMT+08:00
+      shardingTotalCount: 3
+      shardingItemParameters: 0=Beijing,1=Shanghai,2=Guangzhou
