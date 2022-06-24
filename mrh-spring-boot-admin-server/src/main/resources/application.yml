@@ -1,0 +1,27 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 18888
+
+spring: 
+  application: 
+    name: spring-boot-admin-server
+  security:
+    user:
+      name: "admin"
+      password: "123456"
+  cloud: 
+    zookeeper: 
+      enabled: true
+      connect-string: localhost:2181
+      prefer-ip-address: true
+      max-retries: 10
+      max-sleep-ms: 500
+      discovery: 
+        enabled: true
+        register: false
+        root: /cloud
+
+
