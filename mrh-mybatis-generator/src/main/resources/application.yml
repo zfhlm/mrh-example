@@ -1,0 +1,20 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+mybatis-generator: 
+  jdbc: 
+    driver-library-path: classpath:drivers
+    driver-class: com.mysql.jdbc.Driver
+    url: 'jdbc:mysql://192.168.140.210:3306/cluster_0?useUnicode=true&characterEncoding=UTF-8&useInformationSchema=true'
+    user: root
+    password: 123456
+  context: 
+    base-package: org.lushen.mrh.ddd.infrastructure.mybatis
+    model-package: ${mybatis-generator.context.base-package}.model
+    mapper-package: ${mybatis-generator.context.base-package}.mapper
+    mapping-package: ${mybatis-generator.context.base-package}.mapping
+    tables: 
+    - t_role
+    - t_user_role
+    
