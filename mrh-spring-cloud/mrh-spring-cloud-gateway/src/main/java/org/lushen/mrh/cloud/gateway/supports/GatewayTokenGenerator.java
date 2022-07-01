@@ -1,7 +1,5 @@
 package org.lushen.mrh.cloud.gateway.supports;
 
-import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverContext;
-
 /**
  * 网关令牌生成器
  * 
@@ -16,7 +14,7 @@ public interface GatewayTokenGenerator {
 	 * @return
 	 * @throws GatewayTokenException
 	 */
-	public String create(GatewayDeliverContext context) throws GatewayTokenException;
+	public String create(GatewayTokenContext context) throws GatewayTokenException;
 
 	/**
 	 * 解析令牌
@@ -25,6 +23,6 @@ public interface GatewayTokenGenerator {
 	 * @return
 	 * @throws GatewayTokenException
 	 */
-	public GatewayDeliverContext parse(String token) throws GatewayTokenException;
+	public GatewayTokenContext parse(String token) throws GatewayTokenException;
 
 }

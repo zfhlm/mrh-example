@@ -9,10 +9,10 @@ import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_T
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.lushen.mrh.cloud.gateway.supports.GatewayTokenContext;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
-import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverContext;
 import org.lushen.mrh.cloud.reference.supports.StatusCode;
 import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -62,7 +62,11 @@ public class CreateLoginTokenGatewayFilterFactory extends AbstractGatewayFilterF
 				HttpHeaders headers = exchange.getResponse().getHeaders();
 
 				// 登录接口返回的登录信息
-				GatewayDeliverContext context = GatewayDeliverContext.create(key -> headers.getFirst(key));
+				String id = headers.getFirst(JWT_DELIVER_ID_HEADER);
+				String name = headers.getFirst(JWT_DELIVER_NAME_HEADER);
+				String roleId = headers.getFirst(JWT_DELIVER_ROLE_ID_HEADER);
+				String source = headers.getFirst(JWT_DELIVER_SOURCE_HEADER);
+				GatewayTokenContext context = new GatewayTokenContext(id, name, roleId, source);
 
 				log.info(String.format("HTTP login user %s role %s", context.id(), context.roleId()));
 
@@ -71,6 +75,7 @@ public class CreateLoginTokenGatewayFilterFactory extends AbstractGatewayFilterF
 				try {
 					token = tokenGenerator.create(context);
 				} catch (GatewayTokenException e) {
+					log.error(e.getMessage(), e);
 					throw new StatusCodeException(StatusCode.SERVER_ERROR);
 				}
 

@@ -13,11 +13,11 @@ import java.util.Optional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
+import org.lushen.mrh.cloud.gateway.supports.GatewayTokenContext;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException.GatewayTokenExpiredException;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
-import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverContext;
 import org.lushen.mrh.cloud.reference.gateway.GatewayRole;
 import org.lushen.mrh.cloud.reference.supports.StatusCode;
 import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
@@ -81,7 +81,7 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 			}
 
 			// 解析登录令牌
-			GatewayDeliverContext context = ((Supplier<GatewayDeliverContext>)() -> {
+			GatewayTokenContext context = ((Supplier<GatewayTokenContext>)() -> {
 				try {
 					return tokenGenerator.parse(token);
 				} catch (GatewayTokenExpiredException e) {

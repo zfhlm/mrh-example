@@ -1,5 +1,10 @@
 package org.lushen.mrh.cloud.gateway.supports;
 
+import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_DELIVER_ID_HEADER;
+import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_DELIVER_NAME_HEADER;
+import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_DELIVER_ROLE_ID_HEADER;
+import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_DELIVER_SOURCE_HEADER;
+
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException.GatewayTokenExpiredException;
-import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverContext;
 import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders;
 
 import io.jsonwebtoken.Claims;
@@ -36,14 +40,14 @@ public class DefaultTokenGenerator implements GatewayTokenGenerator {
 	private Duration lifetime;											//生存时长
 
 	@Override
-	public String create(GatewayDeliverContext context) throws GatewayTokenException {
+	public String create(GatewayTokenContext context) throws GatewayTokenException {
 		try {
 			// 令牌信息
 			Map<String, Object> claims = new HashMap<String, Object>();
-			claims.put(GatewayDeliverHeaders.JWT_DELIVER_ID_HEADER, context.id());
-			claims.put(GatewayDeliverHeaders.JWT_DELIVER_NAME_HEADER, context.decodedName());
-			claims.put(GatewayDeliverHeaders.JWT_DELIVER_ROLE_ID_HEADER, context.roleId());
-			claims.put(GatewayDeliverHeaders.JWT_DELIVER_SOURCE_HEADER, context.source());
+			claims.put(JWT_DELIVER_ID_HEADER, context.id());
+			claims.put(JWT_DELIVER_NAME_HEADER, context.decodedName());
+			claims.put(JWT_DELIVER_ROLE_ID_HEADER, context.roleId());
+			claims.put(JWT_DELIVER_SOURCE_HEADER, context.source());
 			// 创建令牌
 			JwtBuilder builder = Jwts.builder();
 			builder.setClaims(claims);
@@ -57,12 +61,17 @@ public class DefaultTokenGenerator implements GatewayTokenGenerator {
 	}
 
 	@Override
-	public GatewayDeliverContext parse(String token) throws GatewayTokenException {
+	public GatewayTokenContext parse(String token) throws GatewayTokenException {
 		try {
 			// 解析令牌
 			JwtParser jwtParser = Jwts.parser().setSigningKey(this.secret);
 			Claims claims = jwtParser.parseClaimsJws(token).getBody();
-			return GatewayDeliverContext.create(key -> claims.get(key));
+			// 令牌信息
+			Object id = claims.get(JWT_DELIVER_ID_HEADER);
+			Object name = claims.get(JWT_DELIVER_NAME_HEADER);
+			Object roleId = claims.get(JWT_DELIVER_ROLE_ID_HEADER);
+			Object source = claims.get(JWT_DELIVER_SOURCE_HEADER);
+			return new GatewayTokenContext(id, name, roleId, source);
 		} catch(ExpiredJwtException e) {
 			throw new GatewayTokenExpiredException(e.getMessage(), e);
 		} catch(Exception e) {
