@@ -1,15 +1,15 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_CONTEXT_GATEWAY_API;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.MODIFY_LOGIN_RESPONSE_BODY_FILTER_ORDER;
 import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_TOKEN_HEADER;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.filters.ModifyLoginResponseBodyGatewayFilterFactory.Config;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
-import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.lushen.mrh.cloud.reference.supports.StatusCode;
 import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
 import org.reactivestreams.Publisher;
@@ -19,7 +19,6 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -30,11 +29,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 响应头的 token 移动到 response body
+ * 将登录接口响应头的 token 移动到 response body
  * 
  * @author hlm
  */
 public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
+
+	private final Log log = LogFactory.getLog("ModifyLoginResponseBodyFilter");
 
 	private ObjectMapper objectMapper;
 
@@ -48,30 +49,28 @@ public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGateway
 
 		return new OrderedGatewayFilter((exchange, chain) -> {
 
-			ServerHttpResponse response = exchange.getResponse();
-
-			return chain.filter(exchange.mutate().response(new ServerHttpResponseDecorator(response) {
+			return chain.filter(exchange.mutate().response(new ServerHttpResponseDecorator(exchange.getResponse()) {
 
 				@Override
 				public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
 
-					// 非登录接口
-					GatewayApi gatewayApi = exchange.getAttribute(EXCHANGE_CONTEXT_GATEWAY_API);
-					if(gatewayApi == null || ! gatewayApi.isEnabled() || ! gatewayApi.isLogin() ) {
-						return response.writeWith(body);
+					// 响应已提交不做任何操作
+					if(super.isCommitted()) {
+						return Mono.empty();
 					}
 
 					// 非 Json body
-					if( ! MediaType.APPLICATION_JSON.includes(response.getHeaders().getContentType())) {
-						return response.writeWith(body);
+					if( ! MediaType.APPLICATION_JSON.includes(super.getHeaders().getContentType())) {
+						return super.writeWith(body);
 					}
 
 					// 响应头 token
-					String token = response.getHeaders().getFirst(JWT_TOKEN_HEADER);
+					String token = super.getHeaders().getFirst(JWT_TOKEN_HEADER);
+					super.getHeaders().remove(JWT_TOKEN_HEADER);
 
 					// token 不存在
 					if(token == null) {
-						return response.writeWith(body);
+						return super.writeWith(body);
 					}
 
 					Flux<? extends DataBuffer> fluxBody = Flux.empty();
@@ -82,10 +81,10 @@ public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGateway
 						fluxBody = ((Mono<? extends DataBuffer>)body).flux();
 					}
 
-					return response.writeWith(fluxBody.buffer().map(dataBuffers -> {
+					return super.writeWith(fluxBody.buffer().map(dataBuffers -> {
 
 						// 原始 Json body
-						byte[] originContent = GatewayExchangeUtils.mergeByteArrays(dataBuffers.stream().map(dataBuffer -> {
+						byte[] content = GatewayExchangeUtils.mergeByteArrays(dataBuffers.stream().map(dataBuffer -> {
 							byte[] buffer = new byte[dataBuffer.readableByteCount()];
 							dataBuffer.read(buffer);
 							DataBufferUtils.release(dataBuffer);
@@ -93,17 +92,12 @@ public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGateway
 						}).collect(Collectors.toList()));
 
 						// 更改 Json 添加 token 节点
-						byte[] content = null;
 						try {
-							content = writeTokenToJson(originContent, config.getPropertyPaths(), token);
+							return super.bufferFactory().wrap(writeTokenToJson(content, config.getPropertyPaths(), token));
 						} catch (Exception e) {
-							throw new StatusCodeException(StatusCode.SERVER_ERROR, e.getMessage(), e);
+							log.error(e.getMessage());
+							throw new StatusCodeException(StatusCode.SERVER_ERROR);
 						}
-
-						// 移除响应头 token
-						response.getHeaders().remove(JWT_TOKEN_HEADER);
-
-						return response.bufferFactory().wrap(content);
 
 					}));
 

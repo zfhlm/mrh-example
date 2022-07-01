@@ -3,21 +3,21 @@ package org.lushen.mrh.cloud.gateway.filters;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_LINE_ENABLED;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_REQUEST_ENABLED_FILTER_ORDER;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_CIRCUIT_FILTER_ORDER;
 
-import org.lushen.mrh.cloud.gateway.filters.PrintRequestEnabledGatewayFilterFactory.Config;
+import org.lushen.mrh.cloud.gateway.filters.PrintCircuitGatewayFilterFactory.Config;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 
 /**
- * 日志输出上下文状态配置
+ * 日志输出 开关
  * 
  * @author hlm
  */
-public class PrintRequestEnabledGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
+public class PrintCircuitGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
 
-	public PrintRequestEnabledGatewayFilterFactory() {
+	public PrintCircuitGatewayFilterFactory() {
 		super(Config.class);
 	}
 
@@ -28,7 +28,7 @@ public class PrintRequestEnabledGatewayFilterFactory extends AbstractGatewayFilt
 			exchange.getAttributes().put(EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED, config.isPrintRequestJson());
 			exchange.getAttributes().put(EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED, config.isPrintResponseJson());
 			return chain.filter(exchange);
-		}, PRINT_REQUEST_ENABLED_FILTER_ORDER);
+		}, PRINT_CIRCUIT_FILTER_ORDER);
 	}
 
 	public static class Config {

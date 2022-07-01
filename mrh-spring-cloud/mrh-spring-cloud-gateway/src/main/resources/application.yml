@@ -24,6 +24,14 @@ spring:
       GETTER: NONE
       SETTER: NONE
       FIELD: ANY
+  redis: 
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2s
+    client-type: LETTUCE
+    pool: 
+      max-active: 1000
+      max-idle: 8
   rabbitmq: 
     host: 192.168.140.144
     port: 5672
@@ -62,7 +70,7 @@ spring:
         predicates:
           - Path=/admin/**
         filters:
-          - DeployApi
+          - PrintCircuitBaseOnApi
           - PrintRequestLine
           - PrintRequestJsonBody
           - PrintResponseJsonBody
@@ -72,7 +80,6 @@ spring:
               name: api-admin
               fallbackUri: forward:/fallback
           - Authenticate
-          - CreateLoginToken
           - StripPrefix=1
         uri: lb://mrh-spring-cloud-api-admin
 

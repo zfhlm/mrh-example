@@ -11,9 +11,9 @@ import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
  */
 public class GatewayExchangeUtils {
 
-	public static final int PRINT_REQUEST_ENABLED_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 300;
+	public static final int PRINT_CIRCUIT_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 300;
 
-	public static final int DEPLOY_API_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 200;
+	public static final int PRINT_CIRCUIT_BASE_ON_API_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 200;
 
 	public static final int PRINT_REQUEST_LINE_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 100;
 

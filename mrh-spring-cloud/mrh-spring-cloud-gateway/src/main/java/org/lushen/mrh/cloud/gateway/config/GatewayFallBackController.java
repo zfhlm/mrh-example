@@ -22,7 +22,7 @@ public class GatewayFallBackController {
 	@Autowired
 	private GatewayExceptionConverter exceptionConverter;
 
-	@RequestMapping(path="/fallback")
+	@RequestMapping(path="/fallback", produces="application/json;charset=utf-8")
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<byte[]> fallback(ServerWebExchange exchange) {
 		Throwable cause = exchange.getAttribute(ServerWebExchangeUtils.CIRCUITBREAKER_EXECUTION_EXCEPTION_ATTR);

@@ -28,7 +28,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
  * 
  * @author hlm
  */
-public class DefaultTokenGenerator implements GatewayTokenGenerator {
+public class JsonWebTokenGenerator implements GatewayTokenGenerator {
 
 	@NotNull
 	private SignatureAlgorithm signature = SignatureAlgorithm.HS512;	//加密方式

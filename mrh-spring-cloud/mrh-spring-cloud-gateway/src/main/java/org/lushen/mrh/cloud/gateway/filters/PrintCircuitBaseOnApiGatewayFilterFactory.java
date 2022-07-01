@@ -1,10 +1,9 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.DEPLOY_API_FILTER_ORDER;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_CONTEXT_GATEWAY_API;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_LINE_ENABLED;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_CIRCUIT_BASE_ON_API_FILTER_ORDER;
 
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
@@ -19,11 +18,11 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
  * 
  * @author hlm
  */
-public class DeployApiGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
+public class PrintCircuitBaseOnApiGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
 
 	private GatewayApiMacther apiMacther;
 
-	public DeployApiGatewayFilterFactory(GatewayApiMacther apiMacther) {
+	public PrintCircuitBaseOnApiGatewayFilterFactory(GatewayApiMacther apiMacther) {
 		super(NameConfig.class);
 		this.apiMacther = apiMacther;
 	}
@@ -40,7 +39,6 @@ public class DeployApiGatewayFilterFactory extends AbstractGatewayFilterFactory<
 
 			// 添加上下文信息
 			if(gatewayApi != null) {
-				exchange.getAttributes().put(EXCHANGE_CONTEXT_GATEWAY_API, gatewayApi);
 				exchange.getAttributes().put(EXCHANGE_PRINT_REQUEST_LINE_ENABLED, gatewayApi.isPrintReqLine());
 				exchange.getAttributes().put(EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED, gatewayApi.isPrintReqJson());
 				exchange.getAttributes().put(EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED, gatewayApi.isPrintResJson());
@@ -48,7 +46,7 @@ public class DeployApiGatewayFilterFactory extends AbstractGatewayFilterFactory<
 
 			return chain.filter(exchange);
 
-		}, DEPLOY_API_FILTER_ORDER);
+		}, PRINT_CIRCUIT_BASE_ON_API_FILTER_ORDER);
 
 	}
 

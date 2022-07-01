@@ -8,39 +8,39 @@ package org.lushen.mrh.cloud.reference.supports;
 @SuppressWarnings("serial")
 public class StatusCodeException extends RuntimeException {
 
-	private StatusCode errorReason;
+	private StatusCode statusCode;
 
 	public StatusCodeException() {
 		super();
 	}
 
-	public StatusCodeException(StatusCode errorReason) {
+	public StatusCodeException(StatusCode statusCode) {
 		super();
-		this.errorReason = errorReason;
+		this.statusCode = statusCode;
 	}
 
-	public StatusCodeException(StatusCode errorReason, String message, Throwable cause) {
+	public StatusCodeException(StatusCode statusCode, String message, Throwable cause) {
 		super(message, cause);
-		this.errorReason = errorReason;
+		this.statusCode = statusCode;
 	}
 
-	public StatusCodeException(StatusCode errorReason, String message) {
+	public StatusCodeException(StatusCode statusCode, String message) {
 		super(message);
-		this.errorReason = errorReason;
+		this.statusCode = statusCode;
 	}
 
-	public StatusCodeException(StatusCode errorReason, Throwable cause) {
+	public StatusCodeException(StatusCode statusCode, Throwable cause) {
 		super(cause);
-		this.errorReason = errorReason;
+		this.statusCode = statusCode;
 	}
 
-	public StatusCode getErrorReason() {
-		return errorReason;
+	public StatusCode getStatusCode() {
+		return statusCode;
 	}
 
 	@Override
 	public String getMessage() {
-		return errorReason.getErrmsg();
+		return statusCode.getErrmsg();
 	}
 
 }

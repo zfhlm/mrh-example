@@ -1,5 +1,9 @@
 package org.lushen.mrh.cloud.gateway.config;
 
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExceptionConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -20,6 +24,8 @@ import reactor.core.publisher.Mono;
 @Component
 public class GatewayErrorWebExceptionHandler implements ErrorWebExceptionHandler {
 
+	private final Log log = LogFactory.getLog(GatewayErrorWebExceptionHandler.class.getSimpleName());
+
 	@Autowired
 	private GatewayExceptionConverter exceptionConverter;
 
@@ -29,10 +35,16 @@ public class GatewayErrorWebExceptionHandler implements ErrorWebExceptionHandler
 		// response header
 		ServerHttpResponse response = exchange.getResponse();
 		response.setStatusCode(HttpStatus.OK);
-		response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+		response.getHeaders().set(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf-8");
 
 		// response body
-		DataBuffer buffer = response.bufferFactory().wrap(exceptionConverter.toJsonByteArray(cause));
+		byte[] body = exceptionConverter.toJsonByteArray(cause);
+		DataBuffer buffer = response.bufferFactory().wrap(body);
+
+		// 输出日志
+		if(exchange.getAttributeOrDefault(EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED, false)) {
+			log.info("HTTP response body : " + new String(body));
+		}
 
 		return response.writeWith(Mono.just(buffer));
 

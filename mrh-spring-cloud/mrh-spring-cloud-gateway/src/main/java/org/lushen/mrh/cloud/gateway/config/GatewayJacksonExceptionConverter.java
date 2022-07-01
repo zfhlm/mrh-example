@@ -31,7 +31,7 @@ public class GatewayJacksonExceptionConverter implements GatewayExceptionConvert
 	public byte[] toJsonByteArray(Throwable cause) {
 		// 业务异常
 		if(cause instanceof StatusCodeException) {
-			StatusCode statusCode = ((StatusCodeException)cause).getErrorReason();
+			StatusCode statusCode = ((StatusCodeException)cause).getStatusCode();
 			return toJson(ViewResult.create(statusCode.getErrcode(), statusCode.getErrmsg()));
 		}
 		// 熔断异常
@@ -42,7 +42,7 @@ public class GatewayJacksonExceptionConverter implements GatewayExceptionConvert
 		// 其他异常
 		else {
 			log.error(cause.getMessage(), cause);
-			return toJson(ViewResult.create(StatusCode.SERVER_ERROR.getErrcode(), cause.getMessage()));
+			return toJson(ViewResult.create(StatusCode.SERVER_ERROR));
 		}
 	}
 

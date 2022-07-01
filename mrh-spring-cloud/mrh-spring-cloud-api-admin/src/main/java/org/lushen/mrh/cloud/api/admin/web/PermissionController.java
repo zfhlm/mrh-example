@@ -20,7 +20,7 @@ public class PermissionController {
 
 	@PostMapping(path="login")
 	public ViewResult login(HttpServletResponse response) {
-		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_ID_HEADER, String.valueOf(1));
+		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_ID_HEADER, String.valueOf("aaa"));
 		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_NAME_HEADER, "test");
 		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_ROLE_ID_HEADER, String.valueOf(1));
 		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_SOURCE_HEADER, String.valueOf(2));

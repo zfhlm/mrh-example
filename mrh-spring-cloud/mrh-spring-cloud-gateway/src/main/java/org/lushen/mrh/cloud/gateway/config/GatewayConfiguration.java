@@ -1,18 +1,16 @@
 package org.lushen.mrh.cloud.gateway.config;
 
 import org.lushen.mrh.cloud.gateway.filters.AuthenticateGatewayFilterFactory;
-import org.lushen.mrh.cloud.gateway.filters.CreateLoginTokenGatewayFilterFactory;
-import org.lushen.mrh.cloud.gateway.filters.DeployApiGatewayFilterFactory;
-import org.lushen.mrh.cloud.gateway.filters.ExampleGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.ModifyLoginResponseBodyGatewayFilterFactory;
-import org.lushen.mrh.cloud.gateway.filters.PrintRequestEnabledGatewayFilterFactory;
+import org.lushen.mrh.cloud.gateway.filters.PrintCircuitBaseOnApiGatewayFilterFactory;
+import org.lushen.mrh.cloud.gateway.filters.PrintCircuitGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestJsonBodyGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestLineGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintResponseJsonBodyGatewayFilterFactory;
-import org.lushen.mrh.cloud.gateway.supports.DefaultTokenGenerator;
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
+import org.lushen.mrh.cloud.gateway.supports.JsonWebTokenGenerator;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,17 +32,12 @@ public class GatewayConfiguration {
 	@Validated
 	@ConfigurationProperties(prefix="spring.cloud.gateway.token")
 	public GatewayTokenGenerator gatewayTokenGenerator() {
-		return new DefaultTokenGenerator();
+		return new JsonWebTokenGenerator();
 	}
 
 	@Bean
-	public ExampleGatewayFilterFactory exampleGatewayFilterFactory() {
-		return new ExampleGatewayFilterFactory();
-	}
-
-	@Bean
-	public PrintRequestEnabledGatewayFilterFactory printRequestEnabledGatewayFilterFactory() {
-		return new PrintRequestEnabledGatewayFilterFactory();
+	public PrintCircuitGatewayFilterFactory printCircuitGatewayFilterFactory() {
+		return new PrintCircuitGatewayFilterFactory();
 	}
 
 	@Bean
@@ -63,18 +56,16 @@ public class GatewayConfiguration {
 	}
 
 	@Bean
-	public DeployApiGatewayFilterFactory deployApiGatewayFilterFactory(GatewayApiMacther apiMacther) {
-		return new DeployApiGatewayFilterFactory(apiMacther);
+	public PrintCircuitBaseOnApiGatewayFilterFactory deployApiGatewayFilterFactory(GatewayApiMacther apiMacther) {
+		return new PrintCircuitBaseOnApiGatewayFilterFactory(apiMacther);
 	}
 
 	@Bean
-	public AuthenticateGatewayFilterFactory authenticateGatewayFilterFactory(GatewayRoleMatcher roleMatcher, GatewayTokenGenerator tokenGenerator) {
-		return new AuthenticateGatewayFilterFactory(roleMatcher, tokenGenerator);
-	}
-
-	@Bean
-	public CreateLoginTokenGatewayFilterFactory createLoginTokenGatewayFilterFactory(GatewayTokenGenerator tokenGenerator) {
-		return new CreateLoginTokenGatewayFilterFactory(tokenGenerator);
+	public AuthenticateGatewayFilterFactory authenticateGatewayFilterFactory(
+			GatewayApiMacther apiMacther, 
+			GatewayRoleMatcher roleMatcher,
+			GatewayTokenGenerator tokenGenerator) {
+		return new AuthenticateGatewayFilterFactory(apiMacther, roleMatcher, tokenGenerator);
 	}
 
 	@Bean

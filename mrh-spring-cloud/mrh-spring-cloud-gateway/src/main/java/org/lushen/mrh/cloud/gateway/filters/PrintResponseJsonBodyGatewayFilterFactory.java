@@ -16,7 +16,6 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 
 import reactor.core.publisher.Flux;
@@ -40,21 +39,24 @@ public class PrintResponseJsonBodyGatewayFilterFactory extends AbstractGatewayFi
 
 		return new OrderedGatewayFilter((exchange, chain) -> {
 
-			ServerHttpResponse response = exchange.getResponse();
-
-			return chain.filter(exchange.mutate().response(new ServerHttpResponseDecorator(response) {
+			return chain.filter(exchange.mutate().response(new ServerHttpResponseDecorator(exchange.getResponse()) {
 
 				@Override
 				public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
 
+					// 响应已提交不做任何操作
+					if(super.isCommitted()) {
+						return Mono.empty();
+					}
+
 					// 默认不输出日志
 					if( ! exchange.getAttributeOrDefault(EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED, false) ) {
-						return response.writeWith(body);
+						return super.writeWith(body);
 					}
 
 					// 不输出非 Json 日志
-					if( ! MediaType.APPLICATION_JSON.includes(response.getHeaders().getContentType()) ) {
-						return response.writeWith(body);
+					if( ! MediaType.APPLICATION_JSON.includes(super.getHeaders().getContentType()) ) {
+						return super.writeWith(body);
 					}
 
 					Flux<? extends DataBuffer> fluxBody = Flux.empty();
@@ -65,7 +67,7 @@ public class PrintResponseJsonBodyGatewayFilterFactory extends AbstractGatewayFi
 						fluxBody = ((Mono<? extends DataBuffer>)body).flux();
 					}
 
-					return response.writeWith(fluxBody.buffer().map(dataBuffers -> {
+					return super.writeWith(fluxBody.buffer().map(dataBuffers -> {
 
 						// 读取 body
 						byte[] content = GatewayExchangeUtils.mergeByteArrays(dataBuffers.stream().map(dataBuffer -> {
@@ -77,7 +79,7 @@ public class PrintResponseJsonBodyGatewayFilterFactory extends AbstractGatewayFi
 
 						log.info("HTTP response body : " + new String(content));
 
-						return response.bufferFactory().wrap(content);
+						return super.bufferFactory().wrap(content);
 
 					}));
 
