@@ -1,0 +1,102 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8081
+  servlet: 
+    context-path: /
+
+spring: 
+  application: 
+    name: mrh-spring-cloud-gateway
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+    default-property-inclusion: NON_NULL
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization: 
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY
+  rabbitmq: 
+    host: 192.168.140.144
+    port: 5672
+    username: rabbitmq
+    password: 123456
+    connection-timeout: 0
+    publisher-confirms: true
+    publisher-returns: true
+  cloud: 
+    zookeeper: 
+      enabled: true
+      connect-string: localhost:2181
+      prefer-ip-address: true
+      max-retries: 10
+      max-sleep-ms: 500
+      discovery: 
+        enabled: true
+        register: true
+        root: /cloud
+    gateway: 
+      token:
+        signature: HS512
+        secret: 123456
+        lifetime: 2h
+      discovery: 
+        locator: 
+          enabled: false
+      routes:
+      - id: baidu
+        predicates:
+          - Path=/baidu/**
+        filters:
+          - StripPrefix=1
+        uri: https://www.baidu.comm
+      - id: api-admin
+        predicates:
+          - Path=/admin/**
+        filters:
+          - DeployApi
+          - PrintRequestLine
+          - PrintRequestJsonBody
+          - PrintResponseJsonBody
+          - ModifyLoginResponseBody
+          - name: CircuitBreaker
+            args:
+              name: api-admin
+              fallbackUri: forward:/fallback
+          - Authenticate
+          - CreateLoginToken
+          - StripPrefix=1
+        uri: lb://mrh-spring-cloud-api-admin
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      api-admin:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowType: TIME_BASED
+        minimumNumberOfCalls: 20
+        waitDurationInOpenState: 50s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 30s
+        cancelRunningFuture: true
+    instances:
+      baidu:
+        baseConfig: default
+      api-admin:
+        baseConfig: default
+
+
