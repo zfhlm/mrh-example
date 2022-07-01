@@ -12,11 +12,10 @@ import java.util.Optional;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.lushen.mrh.cloud.gateway.supports.GatewayRoleRepository;
+import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException.GatewayTokenExpiredException;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
-import org.lushen.mrh.cloud.gateway.supports.GatewayTokenRepository;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverContext;
 import org.lushen.mrh.cloud.reference.gateway.GatewayRole;
@@ -38,17 +37,14 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 
 	private final Log log = LogFactory.getLog("AuthenticateFilter");
 
-	private GatewayRoleRepository roleRepository;
+	private GatewayRoleMatcher roleMatcher;
 
 	private GatewayTokenGenerator tokenGenerator;
 
-	private GatewayTokenRepository tokenRepository;
-
-	public AuthenticateGatewayFilterFactory(GatewayRoleRepository roleRepository, GatewayTokenGenerator tokenGenerator, GatewayTokenRepository tokenRepository) {
+	public AuthenticateGatewayFilterFactory(GatewayRoleMatcher roleMatcher, GatewayTokenGenerator tokenGenerator) {
 		super(NameConfig.class);
-		this.roleRepository = roleRepository;
+		this.roleMatcher = roleMatcher;
 		this.tokenGenerator = tokenGenerator;
-		this.tokenRepository = tokenRepository;
 	}
 
 	@Override
@@ -98,13 +94,8 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 
 			log.info(String.format("HTTP request user %s role %s", context.id(), context.roleId()));
 
-			// 验证登录令牌
-			if( ! tokenRepository.validate(token, context) ) {
-				throw new StatusCodeException(StatusCode.USER_EXPIRED_LOGIN);
-			}
-
 			// 验证角色和权限
-			GatewayRole gatewayRole = roleRepository.get(context.roleId());
+			GatewayRole gatewayRole = roleMatcher.match(context.roleId());
 			if(gatewayRole == null) {
 				throw new StatusCodeException(StatusCode.USER_ROLE_NOT_EXIST);
 			}

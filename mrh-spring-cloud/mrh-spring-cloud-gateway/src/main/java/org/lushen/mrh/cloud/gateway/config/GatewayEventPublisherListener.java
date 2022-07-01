@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.apache.commons.collections4.map.MultiKeyMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.lushen.mrh.cloud.gateway.supports.GatewayApiRepository;
-import org.lushen.mrh.cloud.gateway.supports.GatewayRoleRepository;
+import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
+import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.lushen.mrh.cloud.reference.gateway.GatewayPermissionEvent;
 import org.lushen.mrh.cloud.reference.gateway.GatewayRole;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
  * @author hlm
  */
 @Component
-public class GatewayEventPublisherListener implements ApplicationListener<ApplicationEvent>, GatewayApiRepository, GatewayRoleRepository {
+public class GatewayEventPublisherListener implements ApplicationListener<ApplicationEvent>, GatewayApiMacther, GatewayRoleMatcher {
 
 	private final Log log = LogFactory.getLog(getClass());
 
@@ -83,12 +83,12 @@ public class GatewayEventPublisherListener implements ApplicationListener<Applic
 	}
 
 	@Override
-	public GatewayApi get(HttpMethod method, String path) {
+	public GatewayApi match(HttpMethod method, String path) {
 		return cacheHolder.get().getApiCache().get(method.name(), path);
 	}
 
 	@Override
-	public GatewayRole get(long id) {
+	public GatewayRole match(long id) {
 		return cacheHolder.get().getRoleCache().get(id);
 	}
 

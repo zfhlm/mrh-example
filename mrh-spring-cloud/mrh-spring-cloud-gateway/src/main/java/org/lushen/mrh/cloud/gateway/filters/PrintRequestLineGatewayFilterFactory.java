@@ -1,11 +1,11 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_LINE_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_REQUEST_LINE_FILTER_ORDER;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory.NameConfig;
@@ -17,8 +17,6 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
  * @author hlm
  */
 public class PrintRequestLineGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
-
-	public static final int ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 100;
 
 	private final Log log = LogFactory.getLog("PrintRequestLineFilter");
 
@@ -50,7 +48,7 @@ public class PrintRequestLineGatewayFilterFactory extends AbstractGatewayFilterF
 
 			return chain.filter(exchange);
 
-		}, ORDER);
+		}, PRINT_REQUEST_LINE_FILTER_ORDER);
 
 	}
 

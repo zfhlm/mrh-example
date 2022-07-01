@@ -1,6 +1,7 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_REQUEST_JSON_BODY_FILTER_ORDER;
 
 import java.util.List;
 
@@ -32,8 +33,6 @@ import reactor.core.publisher.Mono;
  * @author hlm
  */
 public class PrintRequestJsonBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
-
-	public static final int ORDER = PrintRequestLineGatewayFilterFactory.ORDER + 1;
 
 	private final Log log = LogFactory.getLog("PrintRequestJsonBodyFilter");
 
@@ -84,7 +83,7 @@ public class PrintRequestJsonBodyGatewayFilterFactory extends AbstractGatewayFil
 						return chain.filter(exchange.mutate().request(newRequest).response(response).build());
 					}));
 
-		}, ORDER);
+		}, PRINT_REQUEST_JSON_BODY_FILTER_ORDER);
 
 	}
 

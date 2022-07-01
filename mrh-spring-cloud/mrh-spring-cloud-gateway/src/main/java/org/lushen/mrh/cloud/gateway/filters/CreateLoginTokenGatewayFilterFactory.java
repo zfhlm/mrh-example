@@ -11,7 +11,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenException;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
-import org.lushen.mrh.cloud.gateway.supports.GatewayTokenRepository;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverContext;
 import org.lushen.mrh.cloud.reference.supports.StatusCode;
@@ -24,7 +23,7 @@ import org.springframework.http.HttpHeaders;
 import reactor.core.publisher.Mono;
 
 /**
- * 更改登录接口响应头，生成登录 token 过滤器工厂
+ * 根据登录接口返回的响应头登录信息，生成登录 token
  * 
  * @author hlm
  */
@@ -34,12 +33,9 @@ public class CreateLoginTokenGatewayFilterFactory extends AbstractGatewayFilterF
 
 	private GatewayTokenGenerator tokenGenerator;
 
-	private GatewayTokenRepository tokenRepository;
-
-	public CreateLoginTokenGatewayFilterFactory(GatewayTokenGenerator tokenGenerator, GatewayTokenRepository tokenRepository) {
+	public CreateLoginTokenGatewayFilterFactory(GatewayTokenGenerator tokenGenerator) {
 		super(NameConfig.class);
 		this.tokenGenerator = tokenGenerator;
-		this.tokenRepository = tokenRepository;
 	}
 
 	@Override
@@ -77,9 +73,6 @@ public class CreateLoginTokenGatewayFilterFactory extends AbstractGatewayFilterF
 				} catch (GatewayTokenException e) {
 					throw new StatusCodeException(StatusCode.SERVER_ERROR);
 				}
-
-				// 存储登录令牌
-				tokenRepository.update(token, context);
 
 				// 添加登录令牌到响应头，并移除登录用户响应头信息
 				headers.set(JWT_TOKEN_HEADER, token);

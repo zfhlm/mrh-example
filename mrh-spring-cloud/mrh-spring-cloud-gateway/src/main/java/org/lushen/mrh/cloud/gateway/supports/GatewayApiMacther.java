@@ -4,11 +4,11 @@ import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.springframework.http.HttpMethod;
 
 /**
- * 网关 api 信息查询接口
+ * 网关 api 匹配接口
  * 
  * @author hlm
  */
-public interface GatewayApiRepository {
+public interface GatewayApiMacther {
 
 	/**
 	 * 获取 api 信息
@@ -17,6 +17,6 @@ public interface GatewayApiRepository {
 	 * @param path
 	 * @return
 	 */
-	public GatewayApi get(HttpMethod method, String path);
+	public GatewayApi match(HttpMethod method, String path);
 
 }

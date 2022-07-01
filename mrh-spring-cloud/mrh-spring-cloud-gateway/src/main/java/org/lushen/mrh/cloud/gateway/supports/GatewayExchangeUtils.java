@@ -2,6 +2,8 @@ package org.lushen.mrh.cloud.gateway.supports;
 
 import java.util.List;
 
+import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
+
 /**
  * 工具类
  * 
@@ -9,27 +11,31 @@ import java.util.List;
  */
 public class GatewayExchangeUtils {
 
+	public static final int PRINT_REQUEST_ENABLED_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 300;
+
+	public static final int DEPLOY_API_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 200;
+
+	public static final int PRINT_REQUEST_LINE_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 100;
+
+	public static final int PRINT_REQUEST_JSON_BODY_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 99;
+
+	public static final int PRINT_RESPONSE_JSON_BODY_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 99;
+
+	public static final int MODIFY_LOGIN_RESPONSE_BODY_FILTER_ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 50;
+
+	// =====================================================================================================================
+
 	private static final String EXCHANGE_PREFIX = GatewayExchangeUtils.class.getName() + ".";
 
-	/**
-	 * api exchange attribute {@link org.lushen.mrh.cloud.reference.gateway.GatewayApi}
-	 */
 	public static final String EXCHANGE_CONTEXT_GATEWAY_API = EXCHANGE_PREFIX + "exchange_context_gateway_api";
 
-	/**
-	 * print request line exchange attribute {true, false}
-	 */
 	public static final String EXCHANGE_PRINT_REQUEST_LINE_ENABLED = EXCHANGE_PREFIX + "exchange_print_request_line_enabled";
 
-	/**
-	 * print request body exchange attribute {true, false}
-	 */
 	public static final String EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED = EXCHANGE_PREFIX + "exchange_print_request_json_body_enabled";
 
-	/**
-	 * print response body exchange attribute {true, false}
-	 */
 	public static final String EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED = EXCHANGE_PREFIX + "exchange_print_response_json_body_enabled";
+
+	// =====================================================================================================================
 
 	/**
 	 * 按顺序将所有 byte[] 合并为一个 byte[]

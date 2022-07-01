@@ -1,6 +1,7 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_CONTEXT_GATEWAY_API;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.MODIFY_LOGIN_RESPONSE_BODY_FILTER_ORDER;
 import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_TOKEN_HEADER;
 
 import java.util.Arrays;
@@ -13,7 +14,6 @@ import org.lushen.mrh.cloud.reference.supports.StatusCode;
 import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -30,13 +30,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * 移动登录 token 到 response json body 过滤器工厂
+ * 响应头的 token 移动到 response body
  * 
  * @author hlm
  */
 public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
-
-	public static final int ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 1;
 
 	private ObjectMapper objectMapper;
 
@@ -113,7 +111,7 @@ public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGateway
 
 			}).build());
 
-		}, ORDER);
+		}, MODIFY_LOGIN_RESPONSE_BODY_FILTER_ORDER);
 
 	}
 

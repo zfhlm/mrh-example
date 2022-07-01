@@ -1,33 +1,31 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.DEPLOY_API_FILTER_ORDER;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_CONTEXT_GATEWAY_API;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_LINE_ENABLED;
 import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
 
-import org.lushen.mrh.cloud.gateway.supports.GatewayApiRepository;
+import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory.NameConfig;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 /**
- * 发布 {@link GatewayApi} 到服务请求响应上下文 过滤器工厂
+ * 发布 {@link GatewayApi} 到 exchange 上下文
  * 
  * @author hlm
  */
 public class DeployApiGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
 
-	public static final int ORDER = NettyWriteResponseFilter.WRITE_RESPONSE_FILTER_ORDER - 1000;
+	private GatewayApiMacther apiMacther;
 
-	private GatewayApiRepository apiRepository;
-
-	public DeployApiGatewayFilterFactory(GatewayApiRepository apiRepository) {
+	public DeployApiGatewayFilterFactory(GatewayApiMacther apiMacther) {
 		super(NameConfig.class);
-		this.apiRepository = apiRepository;
+		this.apiMacther = apiMacther;
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class DeployApiGatewayFilterFactory extends AbstractGatewayFilterFactory<
 			ServerHttpRequest request = exchange.getRequest();
 
 			// 查找接口
-			GatewayApi gatewayApi = apiRepository.get(request.getMethod(), request.getPath().value());
+			GatewayApi gatewayApi = apiMacther.match(request.getMethod(), request.getPath().value());
 
 			// 添加上下文信息
 			if(gatewayApi != null) {
@@ -50,7 +48,7 @@ public class DeployApiGatewayFilterFactory extends AbstractGatewayFilterFactory<
 
 			return chain.filter(exchange);
 
-		}, ORDER);
+		}, DEPLOY_API_FILTER_ORDER);
 
 	}
 
