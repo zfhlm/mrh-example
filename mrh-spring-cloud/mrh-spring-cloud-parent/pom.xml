@@ -21,6 +21,7 @@
 		<spring.cloud-version>2021.0.3</spring.cloud-version>
 		<io.jsonwebtoken.jjwt.version>0.6.0</io.jsonwebtoken.jjwt.version>
 		<com.alibaba.csp.sentinel-spring-cloud-gateway-adapter>1.8.4</com.alibaba.csp.sentinel-spring-cloud-gateway-adapter>
+		<com.google.guava.version>31.1-jre</com.google.guava.version>
 	</properties>
 
 	<dependencyManagement>
@@ -75,6 +76,11 @@
 				<groupId>com.alibaba.csp</groupId>
 				<artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
 				<version>${com.alibaba.csp.sentinel-spring-cloud-gateway-adapter}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${com.google.guava.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

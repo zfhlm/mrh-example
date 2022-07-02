@@ -82,6 +82,7 @@ spring:
               name: api-admin
               fallbackUri: forward:/fallback
           - Authenticate
+          - GuavaRateLimiter=50
           - StripPrefix=1
         uri: lb://mrh-spring-cloud-api-admin
       - id: default
@@ -126,5 +127,16 @@ resilience4j:
         baseConfig: default
       api-admin:
         baseConfig: default
+
+sentinel:
+  gateway:
+    flow:
+      rules:
+      - resource: api-admin
+        count: 1
+        interval-sec: 1
+      - resource: baidu
+        count: 1
+        interval-sec: 1
 
 

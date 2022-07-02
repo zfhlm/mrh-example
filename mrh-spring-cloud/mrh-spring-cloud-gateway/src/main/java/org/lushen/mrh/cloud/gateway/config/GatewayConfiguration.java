@@ -1,6 +1,8 @@
 package org.lushen.mrh.cloud.gateway.config;
 
 import org.lushen.mrh.cloud.gateway.filters.AuthenticateGatewayFilterFactory;
+import org.lushen.mrh.cloud.gateway.filters.CorsWebFilter;
+import org.lushen.mrh.cloud.gateway.filters.GuavaRateLimiterGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.ModifyLoginResponseBodyGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.NoRouteGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintCircuitBaseOnApiGatewayFilterFactory;
@@ -8,6 +10,7 @@ import org.lushen.mrh.cloud.gateway.filters.PrintCircuitGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestJsonBodyGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestLineGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintResponseJsonBodyGatewayFilterFactory;
+import org.lushen.mrh.cloud.gateway.filters.SentinelGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
@@ -23,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.server.WebFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -108,6 +112,25 @@ public class GatewayConfiguration {
 	@Bean
 	public NoRouteGatewayFilterFactory noRouteGatewayFilterFactory() {
 		return new NoRouteGatewayFilterFactory();
+	}
+
+	// sentinel 限流过滤器工厂
+	@Bean
+	@ConfigurationProperties(prefix="sentinel.gateway.flow")
+	public SentinelGatewayFilterFactory SentinelConfiguration() {
+		return new SentinelGatewayFilterFactory();
+	}
+
+	// guava 限流过滤器工厂
+	@Bean
+	public GuavaRateLimiterGatewayFilterFactory guavaRateLimiterGatewayFilterFactory() {
+		return new GuavaRateLimiterGatewayFilterFactory();
+	}
+
+	// 允许跨域过滤器
+	@Bean
+	public WebFilter corsFilter() {
+		return new CorsWebFilter();
 	}
 
 }

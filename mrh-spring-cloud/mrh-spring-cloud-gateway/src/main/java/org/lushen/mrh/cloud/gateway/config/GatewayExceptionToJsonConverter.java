@@ -9,6 +9,7 @@ import org.lushen.mrh.cloud.reference.supports.ViewResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,9 +21,9 @@ import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
  * @author hlm
  */
 @Component
-public class GatewayJacksonExceptionConverter implements GatewayExceptionConverter {
+public class GatewayExceptionToJsonConverter implements GatewayExceptionConverter {
 
-	private final Log log = LogFactory.getLog(GatewayJacksonExceptionConverter.class.getSimpleName());
+	private final Log log = LogFactory.getLog(GatewayExceptionToJsonConverter.class.getSimpleName());
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -37,6 +38,9 @@ public class GatewayJacksonExceptionConverter implements GatewayExceptionConvert
 		// 熔断异常
 		else if(cause instanceof CallNotPermittedException) {
 			log.error(cause.getMessage());
+			return toJson(ViewResult.create(StatusCode.SERVER_BUSINESS));
+		}
+		else if(cause instanceof ParamFlowException) {
 			return toJson(ViewResult.create(StatusCode.SERVER_BUSINESS));
 		}
 		// 其他异常
