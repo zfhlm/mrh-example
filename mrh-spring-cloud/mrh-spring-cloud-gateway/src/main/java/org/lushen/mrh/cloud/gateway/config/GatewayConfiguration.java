@@ -8,9 +8,7 @@ import org.lushen.mrh.cloud.gateway.filters.PrintCircuitGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestJsonBodyGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestLineGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintResponseJsonBodyGatewayFilterFactory;
-import org.lushen.mrh.cloud.gateway.filters.RequestRateLimiterGatewayFilterFactoryAdapter;
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
-import org.lushen.mrh.cloud.gateway.supports.GatewayRateLimiterKeyResolver;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator.JsonWebTokenGenerator;
@@ -21,8 +19,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
-import org.springframework.cloud.gateway.filter.ratelimit.RateLimiter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
@@ -112,18 +108,6 @@ public class GatewayConfiguration {
 	@Bean
 	public NoRouteGatewayFilterFactory noRouteGatewayFilterFactory() {
 		return new NoRouteGatewayFilterFactory();
-	}
-
-	// 限流 key 处理器
-	@Bean
-	public GatewayRateLimiterKeyResolver gatewayRateLimiterKeyResolver() {
-		return new GatewayRateLimiterKeyResolver();
-	}
-
-	// 限流过滤器适配工厂
-	@Bean
-	public RequestRateLimiterGatewayFilterFactoryAdapter requestRateLimiterGatewayFilterFactoryAdapter(RateLimiter<?> rateLimiter, KeyResolver resolver) {
-		return new RequestRateLimiterGatewayFilterFactoryAdapter(rateLimiter, resolver);
 	}
 
 }

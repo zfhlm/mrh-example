@@ -77,11 +77,6 @@ spring:
           - PrintRequestJsonBody
           - PrintResponseJsonBody
           - ModifyLoginResponseBody
-          - name: RequestRateLimiterAdapter
-            args:
-              redis-rate-limiter.replenishRate: 1
-              redis-rate-limiter.burstCapacity: 1
-              redis-rate-limiter.requestedTokens: 1
           - name: CircuitBreaker
             args:
               name: api-admin
