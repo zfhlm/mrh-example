@@ -12,7 +12,7 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**
- * 网关 熔断限流 fallback
+ * 网关 断路器 fallback
  * 
  * @author hlm
  */
@@ -26,7 +26,11 @@ public class GatewayFallBackController {
 	@ResponseStatus(HttpStatus.OK)
 	public Mono<byte[]> fallback(ServerWebExchange exchange) {
 		Throwable cause = exchange.getAttribute(ServerWebExchangeUtils.CIRCUITBREAKER_EXECUTION_EXCEPTION_ATTR);
-		return Mono.just(exceptionConverter.toJsonByteArray(cause));
+		if(cause != null) {
+			return Mono.just(exceptionConverter.toJsonByteArray(cause));
+		} else {
+			return Mono.empty();
+		}
 	}
 
 }

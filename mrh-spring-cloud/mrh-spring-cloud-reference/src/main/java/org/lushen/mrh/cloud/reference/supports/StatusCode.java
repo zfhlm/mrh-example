@@ -9,11 +9,11 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 public class StatusCode implements Serializable {
-	
+
 	public static final StatusCode SUCCESS = new StatusCode(0, "成功!");
 
 	public static final StatusCode API_NOT_FOUND = new StatusCode(10101, "请求接口不存在!");
-	
+
 	public static final StatusCode API_NOT_ALLOWED = new StatusCode(10102, "请求接口不允许访问!");
 
 	public static final StatusCode API_NOT_ACCEPTABLE = new StatusCode(10103, "请求接口方式错误!");
@@ -37,6 +37,8 @@ public class StatusCode implements Serializable {
 	public static final StatusCode USER_ROLE_NOT_EXIST = new StatusCode(10304, "当前用户所属角色不存在!");
 
 	public static final StatusCode USER_ROLE_DISABLED = new StatusCode(10305, "当前用户所属角色已被禁用!");
+
+	public static final StatusCode USER_FREQUENCY_TOO_QUICKLY = new StatusCode(10306, "请求频率过快，请稍后再试!");
 
 	private int errcode;		// 错误码
 

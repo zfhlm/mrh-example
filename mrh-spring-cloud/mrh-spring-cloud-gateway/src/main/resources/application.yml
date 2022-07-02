@@ -25,7 +25,7 @@ spring:
       SETTER: NONE
       FIELD: ANY
   redis: 
-    host: 127.0.0.1
+    host: 192.168.140.144
     port: 6379
     timeout: 2s
     client-type: LETTUCE
@@ -67,7 +67,7 @@ spring:
           - Path=/baidu/**
         filters:
           - StripPrefix=1
-        uri: https://www.baidu.comm
+        uri: https://www.baidu.com
       - id: api-admin
         predicates:
           - Path=/admin/**
@@ -77,6 +77,11 @@ spring:
           - PrintRequestJsonBody
           - PrintResponseJsonBody
           - ModifyLoginResponseBody
+          - name: RequestRateLimiterAdapter
+            args:
+              redis-rate-limiter.replenishRate: 1
+              redis-rate-limiter.burstCapacity: 1
+              redis-rate-limiter.requestedTokens: 1
           - name: CircuitBreaker
             args:
               name: api-admin
@@ -84,19 +89,38 @@ spring:
           - Authenticate
           - StripPrefix=1
         uri: lb://mrh-spring-cloud-api-admin
+      - id: default
+        predicates:
+          - Path=/**
+        filters:
+          - name: PrintCircuit
+            args:
+              printRequestLine: true
+              printRequestJson: false
+              printResponseJson: false
+          - PrintRequestLine
+          - NoRoute
+        uri: http://localhost
 
 resilience4j:
-  circuitbreaker:
-    instances:
-      api-admin:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        permittedNumberOfCallsInHalfOpenState: 3
-        slidingWindowType: TIME_BASED
-        minimumNumberOfCalls: 20
-        waitDurationInOpenState: 50s
+  circuitbreaker: 
+    configs:
+      default:
         failureRateThreshold: 50
-        eventConsumerBufferSize: 10
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 60s
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 10
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 100
+        minimumNumberOfCalls: 10
+        ignoreExceptions: 
+          - org.lushen.mrh.cloud.reference.supports.StatusCodeException
+    instances:
+      baidu:
+        baseConfig: default
+      api-admin:
+        baseConfig: default
   timelimiter:
     configs:
       default:
