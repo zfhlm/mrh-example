@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -111,8 +114,10 @@ public interface GatewayTokenGenerator {
 			MAPPER.registerModule(new JavaTimeModule());
 		}
 
+		@NotNull
 		private SignatureAlgorithm signature = SignatureAlgorithm.HS512;	//加密方式
 
+		@NotBlank
 		private String secret;												//加密秘钥
 
 		@Override
