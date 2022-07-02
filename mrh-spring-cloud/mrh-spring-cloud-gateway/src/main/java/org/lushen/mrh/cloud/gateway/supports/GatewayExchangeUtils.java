@@ -1,5 +1,9 @@
 package org.lushen.mrh.cloud.gateway.supports;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.cloud.gateway.filter.NettyWriteResponseFilter;
@@ -58,6 +62,40 @@ public class GatewayExchangeUtils {
 			}
 		}
 		return content;
+	}
+
+	/**
+	 * URL encode
+	 * 
+	 * @param arg
+	 * @return
+	 */
+	public static final String urlEncode(String arg) {
+		if(arg == null) {
+			return null;
+		}
+		try {
+			return URLEncoder.encode(arg, StandardCharsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * URL decode
+	 * 
+	 * @param arg
+	 * @return
+	 */
+	public static final String urlDecode(String arg) {
+		if(arg == null) {
+			return null;
+		}
+		try {
+			return URLDecoder.decode(arg, StandardCharsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
 	}
 
 }

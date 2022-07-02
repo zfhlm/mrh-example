@@ -55,7 +55,9 @@ spring:
       token:
         signature: HS512
         secret: 123456
-        lifetime: 2h
+        repository: 
+          type: redis
+          key-prefix: ${spring.application.name}
       discovery: 
         locator: 
           enabled: false

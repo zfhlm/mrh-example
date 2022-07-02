@@ -10,11 +10,17 @@ import org.lushen.mrh.cloud.gateway.filters.PrintResponseJsonBodyGatewayFilterFa
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
-import org.lushen.mrh.cloud.gateway.supports.JsonWebTokenGenerator;
+import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator.JsonWebTokenGenerator;
+import org.lushen.mrh.cloud.gateway.supports.GatewayTokenRepository;
+import org.lushen.mrh.cloud.gateway.supports.GatewayTokenRepository.RedisTokenRepository;
+import org.lushen.mrh.cloud.gateway.supports.GatewayTokenRepository.UnrealizedTokenRepository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,8 +37,21 @@ public class GatewayConfiguration {
 	@Bean
 	@Validated
 	@ConfigurationProperties(prefix="spring.cloud.gateway.token")
-	public GatewayTokenGenerator gatewayTokenGenerator() {
+	public JsonWebTokenGenerator jsonWebTokenGenerator() {
 		return new JsonWebTokenGenerator();
+	}
+
+	@Bean
+	@ConfigurationProperties(prefix="spring.cloud.gateway.token.repository")
+	@ConditionalOnProperty(prefix="spring.cloud.gateway.token.repository", name="type", havingValue="redis", matchIfMissing=false)
+	public RedisTokenRepository redisTokenRepository(ReactiveStringRedisTemplate redisTemplate) {
+		return new RedisTokenRepository(redisTemplate);
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(GatewayTokenRepository.class)
+	public UnrealizedTokenRepository unrealizedTokenRepository() {
+		return new UnrealizedTokenRepository();
 	}
 
 	@Bean
@@ -64,8 +83,9 @@ public class GatewayConfiguration {
 	public AuthenticateGatewayFilterFactory authenticateGatewayFilterFactory(
 			GatewayApiMacther apiMacther, 
 			GatewayRoleMatcher roleMatcher,
-			GatewayTokenGenerator tokenGenerator) {
-		return new AuthenticateGatewayFilterFactory(apiMacther, roleMatcher, tokenGenerator);
+			GatewayTokenGenerator tokenGenerator, 
+			GatewayTokenRepository tokenRepository) {
+		return new AuthenticateGatewayFilterFactory(apiMacther, roleMatcher, tokenGenerator, tokenRepository);
 	}
 
 	@Bean
