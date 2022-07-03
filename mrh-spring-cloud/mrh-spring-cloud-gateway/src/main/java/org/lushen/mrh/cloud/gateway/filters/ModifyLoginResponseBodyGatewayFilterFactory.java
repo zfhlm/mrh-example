@@ -1,15 +1,15 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.MODIFY_LOGIN_RESPONSE_BODY_FILTER_ORDER;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Orders.MODIFY_LOGIN_RESPONSE_BODY_FILTER_ORDER;
 import static org.lushen.mrh.cloud.reference.gateway.GatewayDeliverHeaders.JWT_TOKEN_HEADER;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.filters.ModifyLoginResponseBodyGatewayFilterFactory.Config;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
 import org.lushen.mrh.cloud.reference.supports.StatusCode;
 import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
 import org.reactivestreams.Publisher;
@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
  */
 public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
 
-	private final Log log = LogFactory.getLog("ModifyLoginResponseBodyFilter");
+	private final GatewayLogger log = GatewayLoggerFactory.getLog("ModifyLoginResponseBodyFilter");
 
 	private ObjectMapper objectMapper;
 
@@ -95,7 +95,7 @@ public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGateway
 						try {
 							return super.bufferFactory().wrap(writeTokenToJson(content, config.getPropertyPaths(), token));
 						} catch (Exception e) {
-							log.error(e.getMessage());
+							log.error(exchange, e.getMessage());
 							throw new StatusCodeException(StatusCode.SERVER_ERROR);
 						}
 

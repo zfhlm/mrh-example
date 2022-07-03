@@ -1,12 +1,12 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_REQUEST_JSON_BODY_FILTER_ORDER;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Exchanges.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Orders.PRINT_REQUEST_JSON_BODY_FILTER_ORDER;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
  */
 public class PrintRequestJsonBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
 
-	private final Log log = LogFactory.getLog("PrintRequestJsonBodyFilter");
+	private final GatewayLogger log = GatewayLoggerFactory.getLog("PrintRequestJsonBodyFilter");
 
 	private final List<HttpMessageReader<?>> messageReaders = HandlerStrategies.withDefaults().messageReaders();
 
@@ -63,7 +63,7 @@ public class PrintRequestJsonBodyGatewayFilterFactory extends AbstractGatewayFil
 			// 读取并输出 Json 日志
 			ServerRequest serverRequest = ServerRequest.create(exchange, messageReaders);
 			Mono<byte[]> modifiedBody = serverRequest.bodyToMono(byte[].class).flatMap(body -> {
-				log.info("HTTP request body : " + new String(body));
+				log.info(exchange, "HTTP request body : "+new String(body));
 				return Mono.just(body);
 			});
 

@@ -1,13 +1,14 @@
 package org.lushen.mrh.cloud.gateway.config;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExceptionConverter;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
 import org.lushen.mrh.cloud.reference.supports.StatusCode;
 import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
 import org.lushen.mrh.cloud.reference.supports.ViewResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 
 import com.alibaba.csp.sentinel.slots.block.flow.param.ParamFlowException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,13 +24,13 @@ import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 @Component
 public class GatewayExceptionToJsonConverter implements GatewayExceptionConverter {
 
-	private final Log log = LogFactory.getLog(GatewayExceptionToJsonConverter.class.getSimpleName());
+	private final GatewayLogger log = GatewayLoggerFactory.getLog(GatewayExceptionToJsonConverter.class.getSimpleName());
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
 	@Override
-	public byte[] toJsonByteArray(Throwable cause) {
+	public byte[] toJsonByteArray(ServerWebExchange exchange, Throwable cause) {
 		// 业务异常
 		if(cause instanceof StatusCodeException) {
 			StatusCode statusCode = ((StatusCodeException)cause).getStatusCode();
@@ -37,7 +38,7 @@ public class GatewayExceptionToJsonConverter implements GatewayExceptionConverte
 		}
 		// 熔断异常
 		else if(cause instanceof CallNotPermittedException) {
-			log.error(cause.getMessage());
+			log.error(exchange, cause.getMessage());
 			return toJson(ViewResult.create(StatusCode.SERVER_BUSINESS));
 		}
 		else if(cause instanceof ParamFlowException) {
@@ -45,7 +46,7 @@ public class GatewayExceptionToJsonConverter implements GatewayExceptionConverte
 		}
 		// 其他异常
 		else {
-			log.error(cause.getMessage(), cause);
+			log.error(exchange, cause.getMessage(), cause);
 			return toJson(ViewResult.create(StatusCode.SERVER_ERROR));
 		}
 	}

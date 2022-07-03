@@ -1,9 +1,9 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_REQUEST_LINE_ENABLED;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_CIRCUIT_FILTER_ORDER;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Exchanges.EXCHANGE_PRINT_REQUEST_JSON_BODY_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Exchanges.EXCHANGE_PRINT_REQUEST_LINE_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Exchanges.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Orders.PRINT_CIRCUIT_FILTER_ORDER;
 
 import org.lushen.mrh.cloud.gateway.filters.PrintCircuitGatewayFilterFactory.Config;
 import org.springframework.cloud.gateway.filter.GatewayFilter;

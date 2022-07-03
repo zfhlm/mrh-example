@@ -27,7 +27,9 @@ public class SentinelGatewayFilterFactory extends AbstractGatewayFilterFactory<N
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		GatewayRuleManager.loadRules(this.rules);
+		if( ! this.rules.isEmpty() ) {
+			GatewayRuleManager.loadRules(this.rules);
+		}
 	}
 
 	@Override

@@ -40,6 +40,9 @@ spring:
     connection-timeout: 0
     publisher-confirms: true
     publisher-returns: true
+  sleuth:
+    reactor: 
+      instrumentation-type: MANUAL
   cloud: 
     zookeeper: 
       enabled: true

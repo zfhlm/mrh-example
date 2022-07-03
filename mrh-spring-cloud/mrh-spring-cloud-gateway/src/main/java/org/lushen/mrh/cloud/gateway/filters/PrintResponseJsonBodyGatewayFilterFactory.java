@@ -1,13 +1,13 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
-import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.PRINT_RESPONSE_JSON_BODY_FILTER_ORDER;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Exchanges.EXCHANGE_PRINT_RESPONSE_JSON_BODY_ENABLED;
+import static org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils.Orders.PRINT_RESPONSE_JSON_BODY_FILTER_ORDER;
 
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
+import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
@@ -28,7 +28,7 @@ import reactor.core.publisher.Mono;
  */
 public class PrintResponseJsonBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
 
-	private final Log log = LogFactory.getLog("PrintResponseJsonBodyFilter");
+	private final GatewayLogger log = GatewayLoggerFactory.getLog("PrintResponseJsonBodyFilter");
 
 	public PrintResponseJsonBodyGatewayFilterFactory() {
 		super(NameConfig.class);
@@ -77,7 +77,7 @@ public class PrintResponseJsonBodyGatewayFilterFactory extends AbstractGatewayFi
 							return buffer;
 						}).collect(Collectors.toList()));
 
-						log.info("HTTP response body : " + new String(content));
+						log.info(exchange, "HTTP response body : " + new String(content));
 
 						return super.bufferFactory().wrap(content);
 

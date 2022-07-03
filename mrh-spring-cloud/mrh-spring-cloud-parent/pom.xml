@@ -22,6 +22,7 @@
 		<io.jsonwebtoken.jjwt.version>0.6.0</io.jsonwebtoken.jjwt.version>
 		<com.alibaba.csp.sentinel-spring-cloud-gateway-adapter>1.8.4</com.alibaba.csp.sentinel-spring-cloud-gateway-adapter>
 		<com.google.guava.version>31.1-jre</com.google.guava.version>
+		<org.apache.skywalking.version>8.11.0</org.apache.skywalking.version>
 	</properties>
 
 	<dependencyManagement>
@@ -81,6 +82,16 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${com.google.guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.skywalking</groupId>
+				<artifactId>apm-toolkit-trace</artifactId>
+				<version>${org.apache.skywalking.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.skywalking</groupId>
+				<artifactId>apm-toolkit-log4j-2.x</artifactId>
+				<version>${org.apache.skywalking.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

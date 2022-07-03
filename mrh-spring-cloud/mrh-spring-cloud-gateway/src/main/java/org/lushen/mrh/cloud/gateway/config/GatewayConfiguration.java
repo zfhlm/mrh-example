@@ -12,6 +12,7 @@ import org.lushen.mrh.cloud.gateway.filters.PrintRequestLineGatewayFilterFactory
 import org.lushen.mrh.cloud.gateway.filters.PrintResponseJsonBodyGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.SentinelGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
+import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator.JsonWebTokenGenerator;
@@ -22,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
@@ -131,6 +133,12 @@ public class GatewayConfiguration {
 	@Bean
 	public WebFilter corsFilter() {
 		return new CorsWebFilter();
+	}
+
+	// 初始化 sleuth bean holder
+	@Bean
+	public ApplicationContextAware sleuthTracerInitializer() {
+		return context -> GatewayExchangeUtils.Sleuth.initialize(context);
 	}
 
 }

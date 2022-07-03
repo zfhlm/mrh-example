@@ -27,7 +27,7 @@ public class GatewayFallBackController {
 	public Mono<byte[]> fallback(ServerWebExchange exchange) {
 		Throwable cause = exchange.getAttribute(ServerWebExchangeUtils.CIRCUITBREAKER_EXECUTION_EXCEPTION_ATTR);
 		if(cause != null) {
-			return Mono.just(exceptionConverter.toJsonByteArray(cause));
+			return Mono.just(exceptionConverter.toJsonByteArray(exchange, cause));
 		} else {
 			return Mono.empty();
 		}

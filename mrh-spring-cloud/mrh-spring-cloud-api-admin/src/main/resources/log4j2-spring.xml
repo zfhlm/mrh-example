@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info">
+<Configuration status="info" packages="org.lushen.mrh.cloud.reference.supports.log4j2">
 
 	<Properties>
 		<Property name="log.file.directory" value="/usr/local/logs/mrh/cloud/api/admin"/>
 		<Property name="log.file.max-size" value="500 MB"/>
-		<Property name="log.output.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
+		<Property name="log.output.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} [%equals{%X{traceId}}{}{N/A},%equals{%X{spanId}}{}{N/A},%equals{%user}{}{N/A}] - %msg%n"/>
 	</Properties>
-
+	
 	<Appenders>
 
 		<Console name="ConsoleAppender" target="SYSTEM_OUT">
