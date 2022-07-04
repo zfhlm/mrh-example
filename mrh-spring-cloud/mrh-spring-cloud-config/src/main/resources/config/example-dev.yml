@@ -1,0 +1,99 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+
+spring:
+  application:
+    name: mrh-spring-cloud-api-admin
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+    default-property-inclusion: NON_NULL
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization: 
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY
+  rabbitmq: 
+    host: 192.168.140.144
+    port: 5672
+    username: rabbitmq
+    password: 123456
+    connection-timeout: 0
+    publisher-confirms: true
+    publisher-returns: true
+  cloud: 
+    zookeeper: 
+      enabled: true
+      connect-string: localhost:2181
+      prefer-ip-address: true
+      max-retries: 10
+      max-sleep-ms: 500
+      discovery: 
+        enabled: true
+        register: true
+        root: /cloud
+
+# 这里只作演示，不再接入数据库
+gateway:
+   version: 1
+   apis: 
+    - id: 1
+      name: '欢迎接口'
+      serviceId: 'mrh-spring-cloud-api-admin'
+      method: 'GET'
+      path: '/admin/api/welcome'
+      enabled: true
+      anonymous: false
+      login: false
+      printReqLine: true
+      printReqJson: true
+      printResJson: true
+    - id: 2
+      name: '欢迎接口'
+      serviceId: 'mrh-spring-cloud-api-admin'
+      method: 'POST'
+      path: '/admin/api/welcome'
+      enabled: true
+      anonymous: false
+      login: false
+      printReqLine: true
+      printReqJson: true
+      printResJson: true
+    - id: 3
+      name: '登录接口'
+      serviceId: 'mrh-spring-cloud-api-admin'
+      method: 'POST'
+      path: '/admin/api/permission/login'
+      enabled: true
+      anonymous: true
+      login: true
+      printReqLine: true
+      printReqJson: true
+      printResJson: true
+    - id: 4
+      name: '权限更新接口'
+      serviceId: 'mrh-spring-cloud-api-admin'
+      method: 'GET'
+      path: '/admin/api/permission/update'
+      enabled: true
+      anonymous: false
+      login: false
+      printReqLine: true
+      printReqJson: true
+      printResJson: true
+   roles:
+    - id: 1
+      name: '测试角色'
+      enabled: true
+      apis: [1, 2, 3, 4]

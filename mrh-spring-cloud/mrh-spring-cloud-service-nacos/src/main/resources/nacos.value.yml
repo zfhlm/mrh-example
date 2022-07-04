@@ -1,0 +1,40 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8899
+  servlet: 
+    context-path: /
+
+spring:
+  application:
+    name: mrh-spring-cloud-service-nacos
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+    default-property-inclusion: NON_NULL
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization: 
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY
+  cloud:
+    nacos: 
+      discovery:
+        register-enabled: true
+        server-addr: 192.168.140.210:8848
+        username: nacos
+        password: nacos
+        metadata:
+          cluster: mrh-spring-cloud
+          service: ${spring.application.name}
+        
+
+
+

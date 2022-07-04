@@ -1,0 +1,33 @@
+
+# consul key = config/mrh-spring-cloud-service-consul:dev/data
+
+spring:
+  application:
+    name: mrh-spring-cloud-service-consul
+  profiles:
+    active: dev
+  cloud:
+    consul:
+      enabled: true
+      host: 192.168.140.130
+      port: 18500
+      discovery:
+        enabled: true
+        register: true
+        deregister: true
+        fail-fast: true
+        prefer-ip-address: true
+        register-health-check: true
+        health-check-interval: 5s
+        health-check-critical-timeout: 30s
+        acl-token: d5ab2ee4-ace6-f70f-fd34-2e25e009dfc4
+      config:
+        enabled: true
+        format: yaml
+        prefixes: config
+        default-context: ${spring.application.name}
+        profile-separator: ':'
+        data-key: data
+        acl-token: d5ab2ee4-ace6-f70f-fd34-2e25e009dfc4
+        watch.enabled: false
+

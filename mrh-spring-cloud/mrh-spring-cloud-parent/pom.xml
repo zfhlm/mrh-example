@@ -12,6 +12,9 @@
 		<module>../mrh-spring-cloud-gateway</module>
 		<module>../mrh-spring-cloud-reference</module>
 		<module>../mrh-spring-cloud-api-admin</module>
+		<module>../mrh-spring-cloud-config</module>
+		<module>../mrh-spring-cloud-service-consul</module>
+		<module>../mrh-spring-cloud-service-nacos</module>
 	</modules>
 
 	<properties>
@@ -23,6 +26,7 @@
 		<com.alibaba.csp.sentinel-spring-cloud-gateway-adapter>1.8.4</com.alibaba.csp.sentinel-spring-cloud-gateway-adapter>
 		<com.google.guava.version>31.1-jre</com.google.guava.version>
 		<org.apache.skywalking.version>8.11.0</org.apache.skywalking.version>
+		<com.alibaba.cloud.version>2021.0.1.0</com.alibaba.cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -36,13 +40,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
 				<version>${spring.boot-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring.cloud-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -69,14 +66,28 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.jsonwebtoken</groupId>
-				<artifactId>jjwt</artifactId>
-				<version>${io.jsonwebtoken.jjwt.version}</version>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${com.alibaba.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba.csp</groupId>
 				<artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
 				<version>${com.alibaba.csp.sentinel-spring-cloud-gateway-adapter}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt</artifactId>
+				<version>${io.jsonwebtoken.jjwt.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
