@@ -1,0 +1,36 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8070
+  servlet: 
+    context-path: /
+
+spring:
+  application:
+    name: mrh-spring-cloud-service-eureka-client
+  security:
+    user:
+      name: root
+      password: 123456
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url: 
+      defaultZone: http://root:123456@localhost:8060/eureka,http://root:123456@localhost:8061/eureka,http://root:123456@localhost:8062/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
