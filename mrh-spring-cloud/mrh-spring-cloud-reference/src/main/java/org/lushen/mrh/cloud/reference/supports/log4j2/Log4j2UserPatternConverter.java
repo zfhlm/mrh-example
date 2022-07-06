@@ -17,7 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- * log4j2 输出用户相关信息
+ * log4j2 输出用户 id 和 roleId
  * 
  * @author hlm
  */
@@ -29,6 +29,7 @@ public class Log4j2UserPatternConverter extends LogEventPatternConverter {
 	private Log4j2UserPatternConverter() {
 		super("User", "user");
 	}
+
 	public static Log4j2UserPatternConverter newInstance(final String[] options) {
 		return new Log4j2UserPatternConverter();
 	}
@@ -40,24 +41,26 @@ public class Log4j2UserPatternConverter extends LogEventPatternConverter {
 		RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
 
 		// 获取请求头
-		Function<String, String> getHeaderValue = (name -> {
-			if(attributes instanceof ServletRequestAttributes) {
-				return ((ServletRequestAttributes)attributes).getRequest().getHeader(name);
-			}
-			else if(attributes instanceof WebRequest) {
-				return ((WebRequest)attributes).getHeader(name);
-			} else {
-				return null;
-			}
-		});
-		String id = getHeaderValue.apply(JWT_DELIVER_ID_HEADER);
-		String roleId = getHeaderValue.apply(JWT_DELIVER_ROLE_ID_HEADER);
+		Function<String, String> function = getFunction(attributes);
+		String id = function.apply(JWT_DELIVER_ID_HEADER);
+		String roleId = function.apply(JWT_DELIVER_ROLE_ID_HEADER);
 
 		// 追加到日志输出
 		if(id != null && roleId != null) {
-			toAppendTo.append(id).append("-").append(roleId);
+			toAppendTo.append(id).append(",").append(roleId);
 		}
 
+	}
+
+	private Function<String, String> getFunction(RequestAttributes attributes) {
+		if(attributes instanceof ServletRequestAttributes) {
+			return name -> ((ServletRequestAttributes)attributes).getRequest().getHeader(name);
+		}
+		else if(attributes instanceof WebRequest) {
+			return name -> ((WebRequest)attributes).getHeader(name);
+		} else {
+			return name -> null;
+		}
 	}
 
 }

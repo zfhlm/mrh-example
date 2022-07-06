@@ -13,37 +13,33 @@ public class ViewResult {
 	/**
 	 * 创建视图信息对象
 	 * 
-	 * @param statusCode
 	 * @return
 	 */
-	public static final ViewResult create(StatusCode statusCode) {
-		return create(statusCode.getErrcode(), statusCode.getErrmsg());
+	public static final ViewResult create() {
+		return create(ServiceStatus.OK);
 	}
 
 	/**
 	 * 创建视图信息对象
 	 * 
-	 * @param errcode
-	 * @param errmsg
+	 * @param status
 	 * @return
 	 */
-	public static final ViewResult create(int errcode, String errmsg) {
+	public static final ViewResult create(ServiceStatus status) {
 		ViewResult result = new ViewResult();
-		result.setErrcode(errcode);
-		result.setErrmsg(errmsg);
+		result.setErrcode(status.getErrcode());
+		result.setErrmsg(status.getErrmsg());
 		return result;
 	}
 
 	/**
 	 * 创建视图信息对象
 	 * 
-	 * @param errcode
-	 * @param errmsg
 	 * @param data
 	 * @return
 	 */
-	public static final ViewResult create(int errcode, String errmsg, Object data) {
-		ViewResult result = create(errcode, errmsg);
+	public static final ViewResult create(Object data) {
+		ViewResult result = create();
 		result.setData(data);
 		return result;
 	}
@@ -51,13 +47,11 @@ public class ViewResult {
 	/**
 	 * 创建视图信息对象
 	 * 
-	 * @param errcode
-	 * @param errmsg
 	 * @param datas
 	 * @return
 	 */
-	public static final ViewResult create(int errcode, String errmsg, Collection<?> datas) {
-		ViewResult result = create(errcode, errmsg);
+	public static final ViewResult create(Collection<?> datas) {
+		ViewResult result = create();
 		result.setDatas(datas);
 		return result;
 	}
@@ -65,13 +59,11 @@ public class ViewResult {
 	/**
 	 * 创建视图信息对象
 	 * 
-	 * @param errcode
-	 * @param errmsg
 	 * @param datas
 	 * @return
 	 */
-	public static final ViewResult create(int errcode, String errmsg, Object[] datas) {
-		ViewResult result = create(errcode, errmsg);
+	public static final ViewResult create(Object[] datas) {
+		ViewResult result = create();
 		result.setDatas(datas);
 		return result;
 	}
@@ -79,14 +71,13 @@ public class ViewResult {
 	/**
 	 * 创建视图信息对象
 	 * 
-	 * @param errcode
-	 * @param errmsg
 	 * @param datas
 	 * @param total
 	 * @return
 	 */
-	public static final ViewResult create(int errcode, String errmsg, List<?> datas, long total) {
-		ViewResult result = create(errcode, errmsg, datas);
+	public static final ViewResult create(List<?> datas, long total) {
+		ViewResult result = create();
+		result.setDatas(datas);
 		result.setTotal(total);
 		return result;
 	}

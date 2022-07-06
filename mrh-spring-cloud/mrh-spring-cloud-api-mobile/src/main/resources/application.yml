@@ -1,0 +1,73 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 9528
+  servlet: 
+    context-path: /
+
+spring:
+  application:
+    name: mrh-spring-cloud-api-mobile
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+    default-property-inclusion: NON_NULL
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization: 
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY
+  cloud: 
+    zookeeper: 
+      enabled: true
+      connect-string: localhost:2181
+      prefer-ip-address: true
+      max-retries: 10
+      max-sleep-ms: 500
+      discovery: 
+        enabled: true
+        register: true
+        root: /cloud
+
+feign:
+  clients:
+    organ: mrh-spring-cloud-service-organ
+    department: mrh-spring-cloud-service-organ
+  httpclient:
+    enabled: true
+    disable-ssl-validation: true
+    follow-redirects: true
+    connection-timeout: 2000
+    connection-timer-repeat: 3000
+    max-connections: 200
+    max-connections-per-route: 50
+    time-to-live: 10
+    time-to-live-unit: minutes
+  compression:
+    request:
+      enabled: true
+      request.mime-types: application/json
+      min-request-size: 1024
+    response: 
+      enabled: true
+  circuitbreaker:
+    enabled: true
+    refresh-enabled: true
+    group.enabled: false
+    default-to-properties: true
+    default-config: default
+    config:
+      default:
+        connect-timeout: 2000
+        read-timeout: 3000
+
+
+
+

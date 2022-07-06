@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.lushen.mrh.cloud.gateway.filters.GuavaRateLimiterGatewayFilterFactory.Config;
-import org.lushen.mrh.cloud.reference.supports.StatusCode;
-import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
+import org.lushen.mrh.cloud.reference.supports.ServiceBusinessException;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.route.Route;
@@ -47,7 +47,7 @@ public class GuavaRateLimiterGatewayFilterFactory extends AbstractGatewayFilterF
 			if(rateLimiter.tryAcquire()) {
 				return chain.filter(exchange);
 			} else {
-				throw new StatusCodeException(StatusCode.SERVER_BUSINESS);
+				throw new ServiceBusinessException(ServiceStatus.EXTEND_SERVER_BUSY_ERRROR);
 			}
 		};
 	}

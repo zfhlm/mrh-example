@@ -22,7 +22,7 @@ public class WelcomeController {
 	@RequestMapping(path="")
 	public ViewResult index(HttpServletResponse response) {
 		log.info("welcome");
-		return ViewResult.create(0, "success");
+		return ViewResult.create();
 	}
 
 }

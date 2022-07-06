@@ -1,7 +1,7 @@
 package org.lushen.mrh.cloud.gateway.filters;
 
-import org.lushen.mrh.cloud.reference.supports.StatusCode;
-import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
+import org.lushen.mrh.cloud.reference.supports.ServiceBusinessException;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory.NameConfig;
@@ -20,7 +20,7 @@ public class NoRouteGatewayFilterFactory extends AbstractGatewayFilterFactory<Na
 	@Override
 	public GatewayFilter apply(NameConfig config) {
 		return (exchange, chain) -> {
-			throw new StatusCodeException(StatusCode.API_NOT_AVAILABLE);
+			throw new ServiceBusinessException(ServiceStatus.HTTP_NOT_FOUND);
 		};
 	}
 

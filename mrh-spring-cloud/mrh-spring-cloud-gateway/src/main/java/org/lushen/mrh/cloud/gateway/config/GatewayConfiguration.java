@@ -11,6 +11,7 @@ import org.lushen.mrh.cloud.gateway.filters.PrintRequestJsonBodyGatewayFilterFac
 import org.lushen.mrh.cloud.gateway.filters.PrintRequestLineGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.PrintResponseJsonBodyGatewayFilterFactory;
 import org.lushen.mrh.cloud.gateway.filters.SentinelGatewayFilterFactory;
+import org.lushen.mrh.cloud.gateway.predicates.PathStartWithRoutePredicateFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
@@ -40,6 +41,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @EnableConfigurationProperties
 public class GatewayConfiguration {
+
+	// 注册路由断路工厂
+	@Bean
+	public PathStartWithRoutePredicateFactory pathStartWithRoutePredicateFactory() {
+		return new PathStartWithRoutePredicateFactory();
+	}
 
 	// 登录令牌生成器
 	@Bean

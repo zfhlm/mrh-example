@@ -8,10 +8,8 @@ import java.util.stream.Collectors;
 
 import org.lushen.mrh.cloud.gateway.filters.ModifyLoginResponseBodyGatewayFilterFactory.Config;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
-import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
-import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
-import org.lushen.mrh.cloud.reference.supports.StatusCode;
-import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
+import org.lushen.mrh.cloud.reference.supports.ServiceBusinessException;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
@@ -34,8 +32,6 @@ import reactor.core.publisher.Mono;
  * @author hlm
  */
 public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGatewayFilterFactory<Config> {
-
-	private final GatewayLogger log = GatewayLoggerFactory.getLog("ModifyLoginResponseBodyFilter");
 
 	private ObjectMapper objectMapper;
 
@@ -94,9 +90,8 @@ public class ModifyLoginResponseBodyGatewayFilterFactory extends AbstractGateway
 						// 更改 Json 添加 token 节点
 						try {
 							return super.bufferFactory().wrap(writeTokenToJson(content, config.getPropertyPaths(), token));
-						} catch (Exception e) {
-							log.error(exchange, e.getMessage());
-							throw new StatusCodeException(StatusCode.SERVER_ERROR);
+						} catch (Exception ex) {
+							throw new ServiceBusinessException(ServiceStatus.EXTEND_SERVER_ERROR, ex);
 						}
 
 					}));

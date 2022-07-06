@@ -13,8 +13,6 @@ import java.util.Optional;
 
 import org.lushen.mrh.cloud.gateway.supports.GatewayApiMacther;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExchangeUtils;
-import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
-import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
 import org.lushen.mrh.cloud.gateway.supports.GatewayRoleMatcher;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenGenerator.GatewayTokenException;
@@ -23,8 +21,8 @@ import org.lushen.mrh.cloud.gateway.supports.GatewayTokenObject;
 import org.lushen.mrh.cloud.gateway.supports.GatewayTokenRepository;
 import org.lushen.mrh.cloud.reference.gateway.GatewayApi;
 import org.lushen.mrh.cloud.reference.gateway.GatewayRole;
-import org.lushen.mrh.cloud.reference.supports.StatusCode;
-import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
+import org.lushen.mrh.cloud.reference.supports.ServiceBusinessException;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
 import org.springframework.boot.convert.ApplicationConversionService;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -41,8 +39,6 @@ import reactor.core.publisher.Mono;
  * @author hlm
  */
 public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFactory<NameConfig> {
-
-	private final GatewayLogger log = GatewayLoggerFactory.getLog("AuthenticateFilter");
 
 	private final ApplicationConversionService conversionService = new ApplicationConversionService();
 
@@ -74,10 +70,10 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 			// 获取接口信息
 			GatewayApi gatewayApi = apiMacther.match(exchange.getRequest().getMethod(), exchange.getRequest().getPath().value());
 			if(gatewayApi == null) {
-				throw new StatusCodeException(StatusCode.API_NOT_FOUND);
+				throw new ServiceBusinessException(ServiceStatus.HTTP_NOT_FOUND);
 			}
 			if( ! gatewayApi.isEnabled() ) {
-				throw new StatusCodeException(StatusCode.API_NOT_ALLOWED);
+				throw new ServiceBusinessException(ServiceStatus.EXTEND_URI_NOT_ALLOWED);
 			}
 
 			return Mono.just(exchange.getRequest().mutate().headers(headers -> {
@@ -98,7 +94,7 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 				// 获取登录令牌
 				String token = request.getHeaders().getFirst(JWT_TOKEN_HEADER);
 				if(token == null) {
-					throw new StatusCodeException(StatusCode.USER_NOT_LOGIN);
+					throw new ServiceBusinessException(ServiceStatus.EXTEND_NOT_LOGIN);
 				}
 
 				// 解析登录令牌
@@ -106,33 +102,28 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 					try {
 						return tokenGenerator.parse(token);
 					} catch (GatewayTokenExpiredException e) {
-						throw new StatusCodeException(StatusCode.USER_EXPIRED_LOGIN);
-					} catch (GatewayTokenException e) {
-						log.warn(exchange, e.getMessage(), e);
-						throw new StatusCodeException(StatusCode.USER_NOT_LOGIN);
+						throw new ServiceBusinessException(ServiceStatus.EXTEND_EXPIRED_LOGIN);
+					} catch (GatewayTokenException ex) {
+						throw new ServiceBusinessException(ServiceStatus.EXTEND_NOT_LOGIN, ex);
 					}
 				}).get();
-
-				if(log.isDebugEnabled()) {
-					log.debug(exchange, String.format("HTTP request user %s role %s", tokenObject.getId(), tokenObject.getRoleId()));
-				}
 
 				// 验证角色和权限
 				GatewayRole gatewayRole = roleMatcher.match(tokenObject.getRoleId());
 				if(gatewayRole == null) {
-					throw new StatusCodeException(StatusCode.USER_ROLE_NOT_EXIST);
+					throw new ServiceBusinessException(ServiceStatus.EXTEND_ROLE_NOT_EXIST);
 				}
 				if( ! gatewayRole.isEnabled() ) {
-					throw new StatusCodeException(StatusCode.USER_ROLE_DISABLED);
+					throw new ServiceBusinessException(ServiceStatus.EXTEND_ROLE_DISABLED);
 				}
 				if( ! Optional.ofNullable(gatewayRole.getApis()).orElse(Collections.emptySet()).contains(gatewayApi.getId()) ) {
-					throw new StatusCodeException(StatusCode.USER_NO_PERMISSION);
+					throw new ServiceBusinessException(ServiceStatus.HTTP_FORBIDDEN);
 				}
 
 					// 验证登录令牌
 				return tokenRepository.validate(token, tokenObject).flatMap(correct -> {
 					if( ! correct ) {
-						throw new StatusCodeException(StatusCode.USER_EXPIRED_LOGIN);
+						throw new ServiceBusinessException(ServiceStatus.EXTEND_EXPIRED_LOGIN);
 					}
 					// 添加登录用户信息到请求头
 					return Mono.just(request.mutate().headers(headers -> {
@@ -165,21 +156,15 @@ public class AuthenticateGatewayFilterFactory extends AbstractGatewayFilterFacto
 
 					// 验证登录信息
 					if(tokenObject.getExpired() == null) {
-						log.error(exchange, "HTTP login expired header can not be null !");
-						return Mono.<Void>error(new StatusCodeException(StatusCode.SERVER_ERROR));
-					}
-
-					if(log.isDebugEnabled()) {
-						log.debug(exchange, String.format("HTTP login user %s role %s", tokenObject.getId(), tokenObject.getRoleId()));
+						throw new ServiceBusinessException(ServiceStatus.EXTEND_SERVER_ERROR, "HTTP login expired header can not be null !");
 					}
 
 					// 生成登录令牌
 					String token = null;
 					try {
 						token = tokenGenerator.create(tokenObject);
-					} catch (GatewayTokenException e) {
-						log.error(exchange, e.getMessage(), e);
-						return Mono.<Void>error(new StatusCodeException(StatusCode.SERVER_ERROR));
+					} catch (GatewayTokenException ex) {
+						throw new ServiceBusinessException(ServiceStatus.EXTEND_SERVER_ERROR);
 					}
 
 					// 添加登录令牌到响应头，并移除登录用户响应头信息

@@ -25,12 +25,12 @@ public class PermissionController {
 		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_ROLE_ID_HEADER, String.valueOf(1));
 		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_SOURCE_HEADER, String.valueOf(2));
 		response.setHeader(GatewayDeliverHeaders.JWT_DELIVER_EXPIRED_HEADER, "2h");
-		return ViewResult.create(0, "success");
+		return ViewResult.create();
 	}
 
 	@GetMapping(path="update")
 	public ViewResult update() {
-		return ViewResult.create(0, "success");
+		return ViewResult.create();
 	}
 
 }

@@ -10,10 +10,6 @@ server:
 spring:
   application:
     name: mrh-spring-cloud-service-eureka-client
-  security:
-    user:
-      name: root
-      password: 123456
 
 eureka:
   instance:
@@ -26,11 +22,6 @@ eureka:
     service-url: 
       defaultZone: http://root:123456@localhost:8060/eureka,http://root:123456@localhost:8061/eureka,http://root:123456@localhost:8062/eureka
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
 
 
 

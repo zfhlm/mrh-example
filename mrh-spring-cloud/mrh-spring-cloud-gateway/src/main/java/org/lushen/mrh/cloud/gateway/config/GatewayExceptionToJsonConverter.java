@@ -3,8 +3,8 @@ package org.lushen.mrh.cloud.gateway.config;
 import org.lushen.mrh.cloud.gateway.supports.GatewayExceptionConverter;
 import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
 import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
-import org.lushen.mrh.cloud.reference.supports.StatusCode;
-import org.lushen.mrh.cloud.reference.supports.StatusCodeException;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatusException;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
 import org.lushen.mrh.cloud.reference.supports.ViewResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,24 +31,27 @@ public class GatewayExceptionToJsonConverter implements GatewayExceptionConverte
 
 	@Override
 	public byte[] toJsonByteArray(ServerWebExchange exchange, Throwable cause) {
-		// 业务异常
-		if(cause instanceof StatusCodeException) {
-			StatusCode statusCode = ((StatusCodeException)cause).getStatusCode();
-			return toJson(ViewResult.create(statusCode.getErrcode(), statusCode.getErrmsg()));
+
+		// 输出错误日志
+		log.error(exchange, cause.getMessage(), cause);
+
+		// 状态码异常
+		if(cause instanceof ServiceStatusException) {
+			return toJson(ViewResult.create(((ServiceStatusException)cause).getStatus()));
 		}
 		// 熔断异常
 		else if(cause instanceof CallNotPermittedException) {
-			log.error(exchange, cause.getMessage());
-			return toJson(ViewResult.create(StatusCode.SERVER_BUSINESS));
+			return toJson(ViewResult.create(ServiceStatus.EXTEND_SERVER_BUSY_ERRROR));
 		}
+		// 限流异常
 		else if(cause instanceof ParamFlowException) {
-			return toJson(ViewResult.create(StatusCode.SERVER_BUSINESS));
+			return toJson(ViewResult.create(ServiceStatus.EXTEND_SERVER_BUSY_ERRROR));
 		}
 		// 其他异常
 		else {
-			log.error(exchange, cause.getMessage(), cause);
-			return toJson(ViewResult.create(StatusCode.SERVER_ERROR));
+			return toJson(ViewResult.create(ServiceStatus.EXTEND_SERVER_ERROR));
 		}
+
 	}
 
 	private byte[] toJson(ViewResult result) {
