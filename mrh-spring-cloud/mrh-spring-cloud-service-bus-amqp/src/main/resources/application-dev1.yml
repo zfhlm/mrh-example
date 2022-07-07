@@ -25,7 +25,7 @@ spring:
       SETTER: NONE
       FIELD: ANY
   rabbitmq: 
-    host: amqp-cn-tl32rra2w001.cn-hangzhou.amqp-0.net.mq.amqp.aliyuncs.com
+    host: 127.0.0.1
     port: 5672
     username: MjphbXFwLWNuLXRsMzJycmEydzAwMTpMVEFJNXROTWZBZERkNGhvTmQ1MnJ3YkY=
     password: MUY5OTdGOUI2RTNCNkRCMDBEMUY5NkM1RDdGODRBRjM4QTk4MDU4ODoxNjU3MDYyNjkyODU1
