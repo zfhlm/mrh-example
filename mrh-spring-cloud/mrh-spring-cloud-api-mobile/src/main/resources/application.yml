@@ -53,21 +53,47 @@ feign:
   compression:
     request:
       enabled: true
-      request.mime-types: application/json
+      mime-types: application/json
       min-request-size: 1024
     response: 
       enabled: true
-  circuitbreaker:
-    enabled: true
+  client:
     refresh-enabled: true
-    group.enabled: false
     default-to-properties: true
     default-config: default
     config:
       default:
-        connect-timeout: 2000
-        read-timeout: 3000
+        connect-timeout: 1000
+        read-timeout: 2000
+  circuitbreaker:
+    enabled: true
+    group.enabled: false
+    alphanumeric-ids.enabled: false
 
-
+resilience4j:
+  circuitbreaker: 
+    configs:
+      default:
+        failureRateThreshold: 50
+        slowCallRateThreshold: 100
+        slowCallDurationThreshold: 60s
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 10
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 100
+        minimumNumberOfCalls: 10
+        ignoreExceptions: 
+          - org.lushen.mrh.cloud.reference.supports.ServiceBusinessException
+    instances:
+      organ-client:
+        baseConfig: default
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+        cancelRunningFuture: true
+    instances:
+      organ-client:
+        baseConfig: default
 
 

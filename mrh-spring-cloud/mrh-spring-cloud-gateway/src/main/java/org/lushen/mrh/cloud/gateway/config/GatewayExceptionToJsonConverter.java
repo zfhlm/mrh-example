@@ -1,10 +1,12 @@
 package org.lushen.mrh.cloud.gateway.config;
 
+import java.util.concurrent.TimeoutException;
+
 import org.lushen.mrh.cloud.gateway.supports.GatewayExceptionConverter;
 import org.lushen.mrh.cloud.gateway.supports.GatewayLogger;
 import org.lushen.mrh.cloud.gateway.supports.GatewayLoggerFactory;
-import org.lushen.mrh.cloud.reference.supports.ServiceStatusException;
 import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatusException;
 import org.lushen.mrh.cloud.reference.supports.ViewResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +44,10 @@ public class GatewayExceptionToJsonConverter implements GatewayExceptionConverte
 		// 熔断异常
 		else if(cause instanceof CallNotPermittedException) {
 			return toJson(ViewResult.create(ServiceStatus.EXTEND_SERVER_BUSY_ERRROR));
+		}
+		// 超时异常
+		else if(cause instanceof TimeoutException) {
+			return toJson(ViewResult.create(ServiceStatus.HTTP_REQUEST_TIMEOUT));
 		}
 		// 限流异常
 		else if(cause instanceof ParamFlowException) {

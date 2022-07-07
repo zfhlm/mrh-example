@@ -1,12 +1,13 @@
 package org.lushen.mrh.cloud.service.organ.config;
 
 import java.net.BindException;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.lushen.mrh.cloud.reference.supports.ServiceStatusException;
 import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
+import org.lushen.mrh.cloud.reference.supports.ServiceStatusException;
 import org.lushen.mrh.cloud.reference.supports.feign.InnerServerErrorBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,10 @@ public class GlobalControllerAdvice {
 			// 熔断异常，不往上传递
 			else if(cause instanceof CallNotPermittedException) {
 				return new InnerServerErrorBody(ServiceStatus.EXTEND_SERVER_BUSY_ERRROR, Boolean.TRUE);
+			}
+			// 超时异常，不往上传递
+			else if(cause instanceof TimeoutException) {
+				return new InnerServerErrorBody(ServiceStatus.HTTP_REQUEST_TIMEOUT, Boolean.TRUE);
 			}
 			// 其他错误，非业务异常
 			else {
