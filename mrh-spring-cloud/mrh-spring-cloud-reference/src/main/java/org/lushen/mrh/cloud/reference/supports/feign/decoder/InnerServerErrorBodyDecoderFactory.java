@@ -1,4 +1,4 @@
-package org.lushen.mrh.cloud.reference.supports.feign;
+package org.lushen.mrh.cloud.reference.supports.feign.decoder;
 
 import java.nio.ByteBuffer;
 

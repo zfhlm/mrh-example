@@ -1,4 +1,4 @@
-package org.lushen.mrh.cloud.reference.supports.feign;
+package org.lushen.mrh.cloud.reference.supports.feign.circuit;
 
 import java.lang.reflect.Method;
 

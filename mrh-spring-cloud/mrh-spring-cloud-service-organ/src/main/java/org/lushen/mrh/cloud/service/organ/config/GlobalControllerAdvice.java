@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lushen.mrh.cloud.reference.supports.ServiceStatus;
 import org.lushen.mrh.cloud.reference.supports.ServiceStatusException;
-import org.lushen.mrh.cloud.reference.supports.feign.InnerServerErrorBody;
+import org.lushen.mrh.cloud.reference.supports.feign.decoder.InnerServerErrorBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;

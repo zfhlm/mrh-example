@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * 
  * @author hlm
  */
-@FeignClient(name="${feign.clients.department}", contextId="departmentClient", fallbackFactory=DepartmentClientFallbackFactory.class)
+@FeignClient(name="${feign.clients.department}", contextId="department-client", fallbackFactory=DepartmentClientFallbackFactory.class)
 public interface DepartmentClient {
 
 	/**

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * 
  * @author hlm
  */
-@FeignClient(name="${feign.clients.organ}", contextId="organClient", fallbackFactory=OrganClientFallbackFactory.class)
+@FeignClient(name="${feign.clients.organ}", contextId="organ-client", fallbackFactory=OrganClientFallbackFactory.class)
 public interface OrganClient {
 
 	/**
