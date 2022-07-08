@@ -27,6 +27,7 @@
 		<com.google.guava.version>31.1-jre</com.google.guava.version>
 		<org.apache.skywalking.version>8.11.0</org.apache.skywalking.version>
 		<com.alibaba.cloud.version>2021.0.1.0</com.alibaba.cloud.version>
+		<de.codecentric.boot.admin.version>2.1.6</de.codecentric.boot.admin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -76,6 +77,13 @@
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
 				<version>${com.alibaba.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-dependencies</artifactId>
+				<version>${de.codecentric.boot.admin.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

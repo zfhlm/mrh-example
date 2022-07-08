@@ -1,0 +1,51 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 9557
+  servlet: 
+    context-path: /
+
+spring:
+  application:
+    name: mrh-spring-cloud-service-prometheus
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+    default-property-inclusion: NON_NULL
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization: 
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY
+  cloud: 
+    zookeeper: 
+      enabled: true
+      connect-string: localhost:2181
+      prefer-ip-address: true
+      max-retries: 10
+      max-sleep-ms: 500
+      discovery: 
+        enabled: true
+        register: true
+        root: /cloud
+
+management: 
+  endpoints: 
+    jmx:
+      exposure:
+        include: "*"
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags: 
+      application: ${spring.application.name}
+
+
