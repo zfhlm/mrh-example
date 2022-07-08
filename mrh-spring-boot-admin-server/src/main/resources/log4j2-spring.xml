@@ -2,7 +2,7 @@
 <Configuration status="info">
 
 	<Properties>
-		<Property name="log.file.directory" value="/usr/local/lzsph/logs/boot/admin"/>
+		<Property name="log.file.directory" value="/usr/local/logs/boot/admin"/>
 		<Property name="log.file.max-size" value="500 MB"/>
 		<Property name="log.output.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"/>
 	</Properties>
