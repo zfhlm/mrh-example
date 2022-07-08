@@ -46,3 +46,19 @@ spring:
         enabled: true
         register: true
         root: /cloud
+  sleuth:
+    enabled: true
+    trace-id128: false
+    sampler:
+      # 采样率 0-1 当前 0.1 为采样 10%
+      probability: 0.1
+      # 每秒最大采样数
+      rate: 10
+      refresh.enabled: false
+  zipkin:
+    enabled: true
+    sender.type: WEB
+    base-url: http://localhost:9411
+
+
+
