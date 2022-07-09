@@ -9,12 +9,24 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>../mrh-spring-cloud-api-admin</module>
+		<module>../mrh-spring-cloud-api-mobile</module>
+		<module>../mrh-spring-cloud-api-simple</module>
+		<module>../mrh-spring-cloud-config</module>
 		<module>../mrh-spring-cloud-gateway</module>
 		<module>../mrh-spring-cloud-reference</module>
-		<module>../mrh-spring-cloud-api-admin</module>
-		<module>../mrh-spring-cloud-config</module>
+		<module>../mrh-spring-cloud-service-bootadmin-client</module>
+		<module>../mrh-spring-cloud-service-bootadmin-server</module>
+		<module>../mrh-spring-cloud-service-bus-amqp</module>
 		<module>../mrh-spring-cloud-service-consul</module>
+		<module>../mrh-spring-cloud-service-eureka-client</module>
+		<module>../mrh-spring-cloud-service-eureka-server</module>
 		<module>../mrh-spring-cloud-service-nacos</module>
+		<module>../mrh-spring-cloud-service-organ</module>
+		<module>../mrh-spring-cloud-service-prometheus</module>
+		<module>../mrh-spring-cloud-service-stream</module>
+		<module>../mrh-spring-cloud-service-task</module>
+		<module>../mrh-spring-cloud-service-zookeeper</module>
 	</modules>
 
 	<properties>
