@@ -38,12 +38,6 @@
 			<artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
 		</dependency>
 
-		<!-- spring boot admin -->
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-client</artifactId>
-		</dependency>
-
 		<!-- log4j2 -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>

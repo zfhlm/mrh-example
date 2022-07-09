@@ -5,24 +5,9 @@ logging:
 server: 
   port: 18888
 
-
 spring:
   application:
     name: mrh-spring-cloud-service-bootadmin-server
-  jackson: 
-    date-format: 'yyyy-MM-dd HH:mm:ss'
-    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
-    time-zone: 'GMT+8'
-    default-property-inclusion: NON_NULL
-    serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false
-    deserialization: 
-      FAIL_ON_UNKNOWN_PROPERTIES: false
-      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
-    visibility:
-      GETTER: NONE
-      SETTER: NONE
-      FIELD: ANY
   security:
     user:
       name: "admin"
@@ -30,7 +15,7 @@ spring:
   cloud: 
     zookeeper: 
       enabled: true
-      connect-string: localhost:2181
+      connect-string: 192.168.140.136:2181
       prefer-ip-address: true
       max-retries: 10
       max-sleep-ms: 500
@@ -38,5 +23,11 @@ spring:
         enabled: true
         register: false
         root: /cloud
+    discovery:
+      client:
+        simple:
+          instances: 
+            mrh-spring-cloud-api-simple:
+            - uri: http://localhost:9529
 
 

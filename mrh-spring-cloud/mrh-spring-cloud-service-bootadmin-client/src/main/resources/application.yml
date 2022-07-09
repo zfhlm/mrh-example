@@ -27,7 +27,7 @@ spring:
   cloud: 
     zookeeper: 
       enabled: true
-      connect-string: localhost:2181
+      connect-string: 192.168.140.136:2181
       prefer-ip-address: true
       max-retries: 10
       max-sleep-ms: 500
