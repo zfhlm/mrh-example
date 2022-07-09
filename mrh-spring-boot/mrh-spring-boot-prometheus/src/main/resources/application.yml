@@ -1,0 +1,24 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+
+spring: 
+  application:
+    name: mrh-spring-boot-prometheus
+
+management: 
+   endpoints: 
+      jmx:
+         exposure:
+            include: "*"
+      web:
+         exposure:
+            include: '*'
+
+
+

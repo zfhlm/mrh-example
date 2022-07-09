@@ -1,2 +1,0 @@
-
-# mrh-netty-protobuf

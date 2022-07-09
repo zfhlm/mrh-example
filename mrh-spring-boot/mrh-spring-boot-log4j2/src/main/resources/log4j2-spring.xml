@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 扫描插件包 -->
+<Configuration status="info" packages="org.lushen.mrh.boot.log4j2.config">
+	<Appenders>
+		<Console name="ConsoleAppender" target="SYSTEM_OUT">
+			<!-- 自定义插件寻找配置 -->
+			<PatternLayout pattern="${application:logging.pattern}" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.springframework" level="info"/>
+		<Root level="info">
+			<AppenderRef ref="ConsoleAppender"/>
+		</Root>
+	</Loggers>
+</Configuration>

@@ -1,0 +1,20 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+
+spring: 
+  application:
+    name: mrh-spring-boot-cache-redis
+  redis: 
+    host: 127.0.0.1
+    port: 6379
+    timeout: 200ms
+    pool: 
+      max-active: 3000
+      max-idle: 8
+

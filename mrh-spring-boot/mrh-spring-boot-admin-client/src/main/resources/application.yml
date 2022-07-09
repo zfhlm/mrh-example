@@ -1,0 +1,22 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+
+spring:
+  application:
+    name: mrh-spring-boot-admin-client 
+
+management: 
+  endpoints: 
+    jmx:
+      exposure:
+        include: "*"
+    web:
+      exposure:
+        include: '*'
+
+
+

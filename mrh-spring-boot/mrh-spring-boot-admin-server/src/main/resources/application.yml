@@ -1,0 +1,21 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 18888
+
+spring: 
+  application: 
+    name: mrh-spring-boot-admin-server
+  security:
+    user:
+      name: "admin"
+      password: "123456"
+  cloud: 
+    discovery:
+      client:
+        simple:
+          instances: 
+            mrh-spring-boot-admin-client:
+            - uri: http://localhost:8888

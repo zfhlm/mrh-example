@@ -1,2 +1,0 @@
-
-# mrh-canal-client
