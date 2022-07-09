@@ -30,8 +30,8 @@ spring:
     username: MjphbXFwLWNuLXRsMzJycmEydzAwMTpMVEFJNXROTWZBZERkNGhvTmQ1MnJ3YkY=
     password: MUY5OTdGOUI2RTNCNkRCMDBEMUY5NkM1RDdGODRBRjM4QTk4MDU4ODoxNjU3MDYyNjkyODU1
     connection-timeout: 0
-    publisher-confirms: true
     publisher-returns: true
+    publisher-confirm-type: CORRELATED
   cloud: 
     zookeeper: 
       enabled: true

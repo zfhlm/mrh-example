@@ -1,0 +1,106 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8085
+  servlet: 
+    context-path: /
+
+spring:
+  application:
+    name: mrh-spring-cloud-service-stream
+  jackson: 
+    date-format: 'yyyy-MM-dd HH:mm:ss'
+    joda-date-time-format: 'yyyy-MM-dd HH:mm:ss'
+    time-zone: 'GMT+8'
+    default-property-inclusion: NON_NULL
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    deserialization: 
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+      READ_DATE_TIMESTAMPS_AS_NANOSECONDS: false
+    visibility:
+      GETTER: NONE
+      SETTER: NONE
+      FIELD: ANY
+  cloud: 
+    zookeeper: 
+      enabled: true
+      connect-string: 192.168.140.136:2181
+      prefer-ip-address: true
+      max-retries: 10
+      max-sleep-ms: 500
+      discovery: 
+        enabled: true
+        register: true
+        root: /cloud
+    function:
+      autodetect: false
+      #definition: user-producer;user-consumer;order-producer;order-consumer
+      definition: user-consumer;order-consumer
+    stream:
+      binders:
+        rabbit-1:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 192.168.140.136
+                port: 5673
+                username: rabbitmq
+                password: 123456
+                virtual-host: /
+                publisher-returns: true
+                publisher-confirm-type: CORRELATED
+        kafka-1:
+          type: kafka
+          environment:
+            spring:
+              kafka:
+                bootstrap-servers: 192.168.140.136:9092
+                producer:
+                  acks: 1
+      bindings:
+        user-consumer-in-0:
+          binder: rabbit-1
+          destination: user
+          group: mrh
+          content-type: application/json
+          consumer:
+            auto-startup: true
+            concurrency: 1
+            max-attempts: 3
+            back-off-initial-interval: 1000
+            back-off-max-interval: 10000
+            back-off-multiplier: 2.0
+            default-retryable: true
+        user-producer-out-0:
+          binder: rabbit-1
+          destination: user
+          group: mrh
+          content-type: application/json
+        order-consumer-in-0:
+          binder: kafka-1
+          destination: order
+          content-type: application/json
+          group: mrh
+          consumer:
+            auto-startup: true
+            concurrency: 1
+            max-attempts: 3
+            back-off-initial-interval: 1000
+            back-off-max-interval: 10000
+            back-off-multiplier: 2.0
+            default-retryable: true
+        order-producer-out-0:
+          binder: kafka-1
+          destination: order
+          content-type: application/json
+          group: mrh
+          producer:
+            partition-count: 2
+
+
+
+
