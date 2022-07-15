@@ -1,4 +1,4 @@
-package org.lushen.mrh.cloud.service.prometheus;
+package org.lushen.mrh.cloud.service.prometheus.rest;
 
 import java.util.ArrayList;
 import java.util.HashMap;

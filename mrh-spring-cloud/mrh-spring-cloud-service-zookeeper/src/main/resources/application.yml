@@ -35,3 +35,12 @@ spring:
         enabled: true
         register: true
         root: /cloud
+
+management: 
+  endpoints: 
+    jmx:
+      exposure:
+        include: "*"
+    web:
+      exposure:
+        include: '*'
