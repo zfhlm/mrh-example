@@ -48,7 +48,6 @@ public class WeightMasterSlaveLoadBalanceAlgorithm implements MasterSlaveLoadBal
 
 	@Override
 	public void setProperties(Properties properties) {
-		System.err.println(properties);
 		this.properties.putAll(properties);
 	}
 

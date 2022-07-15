@@ -23,6 +23,8 @@
 		<org.apache.shardingsphere.elasticjob.lite.version>3.0.1</org.apache.shardingsphere.elasticjob.lite.version>
 		<com.alibaba.otter.version>1.1.4</com.alibaba.otter.version>
 		<org.apache.zookeeper.version>3.6.3</org.apache.zookeeper.version>
+		<org.apache.shardingsphere.version>4.1.1</org.apache.shardingsphere.version>
+		<org.mybatis.spring.boot.version>2.1.0</org.mybatis.spring.boot.version>
 	</properties>
 
 	<dependencyManagement>
@@ -74,6 +76,16 @@
 				<groupId>org.apache.shardingsphere.elasticjob</groupId>
 				<artifactId>elasticjob-lite-spring-boot-starter</artifactId>
 				<version>${org.apache.shardingsphere.elasticjob.lite.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${org.mybatis.spring.boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shardingsphere</groupId>
+				<artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+				<version>${org.apache.shardingsphere.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.mybatis.generator</groupId>
