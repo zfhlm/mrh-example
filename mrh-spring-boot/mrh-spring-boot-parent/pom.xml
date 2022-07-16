@@ -25,6 +25,9 @@
 		<org.apache.zookeeper.version>3.6.3</org.apache.zookeeper.version>
 		<org.apache.shardingsphere.version>4.1.1</org.apache.shardingsphere.version>
 		<org.mybatis.spring.boot.version>2.1.0</org.mybatis.spring.boot.version>
+		<com.alibaba.druid.version>1.2.10</com.alibaba.druid.version>
+		<io.seata.boot.version>1.5.2</io.seata.boot.version>
+		<com.alibaba.nacos.version>1.4.1</com.alibaba.nacos.version>
 	</properties>
 
 	<dependencyManagement>
@@ -136,6 +139,26 @@
 				<groupId>org.apache.zookeeper</groupId>
 				<artifactId>zookeeper</artifactId>
 				<version>${org.apache.zookeeper.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${com.alibaba.druid.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.seata</groupId>
+				<artifactId>seata-spring-boot-starter</artifactId>
+				<version>${io.seata.boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.nacos</groupId>
+				<artifactId>nacos-client</artifactId>
+				<version>${com.alibaba.nacos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.nacos</groupId>
+				<artifactId>nacos-api</artifactId>
+				<version>${com.alibaba.nacos.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

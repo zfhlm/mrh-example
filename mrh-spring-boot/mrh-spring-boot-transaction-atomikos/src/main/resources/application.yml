@@ -1,0 +1,71 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+    session.timeout: 0
+
+spring: 
+  application:
+    name: mrh-spring-boot-transaction-atomikos
+  datasource: 
+    user:
+      url: 'jdbc:mysql://192.168.140.130:3306/user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      max-active: 50
+      min-idle: 1
+      max-wait: 100
+      pool-prepared-statements: false
+      validation-query: 'select 1'
+      validation-query-timeout: 1
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      keep-alive: false
+      time-between-eviction-runs-millis: 5000
+      min-evictable-idle-time-millis: 600000
+    integral:
+      url: 'jdbc:mysql://192.168.140.130:3306/integral?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      max-active: 50
+      min-idle: 1
+      max-wait: 100
+      pool-prepared-statements: false
+      validation-query: 'select 1'
+      validation-query-timeout: 1
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      keep-alive: false
+      time-between-eviction-runs-millis: 5000
+      min-evictable-idle-time-millis: 600000
+  jta:
+    enabled: true
+    log-dir: /usr/local/logs/boot/transaction/atomikos
+    transaction-manager-id: ${spring.application.name}-${server.port}
+    atomikos:
+      properties:
+        default-jta-timeout: 5s
+        max-timeout: 5s
+        max-actives: 100
+
+mybatis: 
+  user:
+    mapper-locations: classpath:org/lushen/mrh/boot/transaction/atomikos/dao/user/mapping/*.xml
+    type-aliases-package: org.lushen.mrh.boot.transaction.atomikos.dao.user.model
+    type-handlers-package: org.lushen.mrh.boot.transaction.atomikos.dao.user.handler
+  integral:
+    mapper-locations: classpath:org/lushen/mrh/boot/transaction/atomikos/dao/integral/mapping/*.xml
+    type-aliases-package: org.lushen.mrh.boot.transaction.atomikos.dao.integral.model
+    type-handlers-package: org.lushen.mrh.boot.transaction.atomikos.dao.integral.handler
+
+
