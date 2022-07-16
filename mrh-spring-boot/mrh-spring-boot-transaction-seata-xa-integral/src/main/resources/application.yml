@@ -1,4 +1,38 @@
 
-spring:
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+    session.timeout: 0
+
+spring: 
   profiles:
     active: nacos
+  application:
+    name: mrh-spring-boot-transaction-seata-xa-integral
+  datasource: 
+    url: 'jdbc:mysql://192.168.140.130:3306/integral?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initial-size: 1
+    max-active: 50
+    min-idle: 1
+    max-wait: 100
+    pool-prepared-statements: false
+    validation-query: 'select 1'
+    validation-query-timeout: 1
+    test-on-borrow: false
+    test-on-return: false
+    test-while-idle: true
+    keep-alive: false
+    time-between-eviction-runs-millis: 5000
+    min-evictable-idle-time-millis: 600000
+
+mybatis: 
+  mapper-locations: classpath:org/lushen/mrh/boot/seata/at/dao/mapping/*.xml
+  type-aliases-package: org.lushen.mrh.boot.seata.at.dao.model
+  type-handlers-package: org.lushen.mrh.boot.seata.at.dao.handler

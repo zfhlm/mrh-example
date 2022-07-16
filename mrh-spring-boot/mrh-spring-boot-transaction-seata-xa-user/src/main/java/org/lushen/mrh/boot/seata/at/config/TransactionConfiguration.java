@@ -22,7 +22,7 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.xa.DruidXADataSource;
 
 /**
  * 本地事务配置
@@ -35,13 +35,13 @@ public class TransactionConfiguration {
 	// 本地数据源
 	@Bean
 	@ConfigurationProperties("spring.datasource")
-	public DruidDataSource basicDataSource() {
-		return new DruidDataSource();
+	public DruidXADataSource druidDataSource() {
+		return new DruidXADataSource();
 	}
 
 	// 本地事务管理器
 	@Bean
-	public DataSourceTransactionManager dataSourceTransactionManager(DruidDataSource dataSource) {
+	public DataSourceTransactionManager dataSourceTransactionManager(DruidXADataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 

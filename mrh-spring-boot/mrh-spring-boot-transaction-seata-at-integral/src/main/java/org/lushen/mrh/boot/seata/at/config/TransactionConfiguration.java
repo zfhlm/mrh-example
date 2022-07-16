@@ -10,6 +10,8 @@ import org.springframework.aop.Pointcut;
 import org.springframework.aop.PointcutAdvisor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.annotation.AnnotationMethodMatcher;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -30,11 +32,20 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 @Configuration
 public class TransactionConfiguration {
 
+	// 本地数据源
+	@Bean
+	@ConfigurationProperties("spring.datasource.dbcp2")
+	public BasicDataSource basicDataSource(DataSourceProperties properties) {
+		return (BasicDataSource) properties.initializeDataSourceBuilder().build();
+	}
+
+	// 本地事务管理器
 	@Bean
 	public DataSourceTransactionManager dataSourceTransactionManager(BasicDataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 
+	// 本地事务拦截器
 	@Bean
 	public TransactionInterceptor txAdvice(TransactionManager txManager){
 		// 事务规则定义，所有异常都进行回滚
@@ -46,6 +57,7 @@ public class TransactionConfiguration {
 		return new TransactionInterceptor(txManager, transactionAttributeSource) ;
 	}
 
+	// 本地事务切面
 	@Bean
 	public PointcutAdvisor txPointcutAdvisor(TransactionInterceptor txAdvice){
 		DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor();

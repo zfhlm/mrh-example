@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import io.seata.core.context.RootContext;
 
 /**
- * seata xid 传递拦截器，非微服务环境使用 http 作远程调用测试
+ * seata XID 传递拦截器，远程调用测试使用
  * 
  * @author hlm
  */

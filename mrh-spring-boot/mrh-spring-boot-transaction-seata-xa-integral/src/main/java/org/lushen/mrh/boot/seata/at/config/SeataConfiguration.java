@@ -1,6 +1,14 @@
 package org.lushen.mrh.boot.seata.at.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
+import com.alibaba.druid.pool.xa.DruidXADataSource;
+
+import io.seata.rm.datasource.xa.DataSourceProxyXA;
 
 /**
  * seata 配置
@@ -10,12 +18,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SeataConfiguration {
 
-	// 注意，不能创建代理数据源，否则多次代理会导致回滚错误 
-	//	@Bean("dataSourceProxy")
-	//	@Primary
-	//	@ConditionalOnMissingBean(DataSourceProxyXA.class)
-	//	public DataSource dataSource(DruidDataSource dataSource) {
-	//		return new DataSourceProxyXA(dataSource);
-	//	}
+	@Bean("dataSourceProxy")
+	@Primary
+	public DataSource dataSource(DruidXADataSource dataSource) {
+		return new DataSourceProxyXA(dataSource);
+	}
 
 }
