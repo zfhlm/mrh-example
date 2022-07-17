@@ -1,15 +1,13 @@
 package org.lushen.mrh.boot.seata.at.rest;
 
-import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.lushen.mrh.boot.seata.at.dao.mapper.TUserMapper;
 import org.lushen.mrh.boot.seata.at.dao.model.TUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +21,6 @@ public class TestController {
 	@Autowired
 	private TUserMapper userMapper;
 
-	//@GlobalLock
 	@GlobalTransactional(rollbackFor=Throwable.class, timeoutMills=5000)
 	@Transactional
 	@RequestMapping(path="user")
@@ -39,9 +36,9 @@ public class TestController {
 
 		// 远程调用模拟，带上 XID
 		RestTemplate template = new RestTemplate();
-		LinkedMultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-		headers.put(RootContext.KEY_XID, Collections.singletonList(RootContext.getXID()));
-		template.postForEntity("http://localhost:8888/integral", new HttpEntity<String>(headers), String.class);
+		ResponseEntity<String> res = template.getForEntity("http://localhost:8888/add", String.class);
+		Integer id = Integer.parseInt(res.getBody());
+		System.out.println(id);
 
 		// 模拟错误回滚
 		if(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE)%2 == 0) {

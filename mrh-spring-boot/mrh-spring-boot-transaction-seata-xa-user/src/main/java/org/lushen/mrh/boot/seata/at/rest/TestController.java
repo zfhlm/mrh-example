@@ -23,8 +23,8 @@ public class TestController {
 	@Autowired
 	private TUserMapper userMapper;
 
-	@Transactional(rollbackFor=Throwable.class)
 	@GlobalTransactional(rollbackFor=Throwable.class, timeoutMills=5000)
+	@Transactional
 	@RequestMapping(path="user")
 	public String user() {
 

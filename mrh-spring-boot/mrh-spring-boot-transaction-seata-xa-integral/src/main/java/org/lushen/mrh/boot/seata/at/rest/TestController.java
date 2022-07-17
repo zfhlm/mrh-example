@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.seata.core.context.RootContext;
-import io.seata.spring.annotation.GlobalTransactional;
 
 @RestController
 public class TestController {
@@ -19,10 +18,9 @@ public class TestController {
 	@Autowired
 	private TIntegralMapper integralMapper;
 
-	@Transactional(rollbackFor=Throwable.class)
-	@GlobalTransactional(rollbackFor=Throwable.class, timeoutMills=5000)
+	@Transactional
 	@RequestMapping(path="integral")
-	public String user() {
+	public String integral() {
 
 		System.err.println(RootContext.getXID());
 

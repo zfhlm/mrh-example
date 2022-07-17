@@ -24,7 +24,7 @@ public class TestController {
 	private TUserMapper userMapper;
 
 	@GlobalTransactional(rollbackFor=Throwable.class, timeoutMills=500000)
-	@Transactional(rollbackFor=Throwable.class)
+	@Transactional
 	@RequestMapping(path="user")
 	public String user() {
 
