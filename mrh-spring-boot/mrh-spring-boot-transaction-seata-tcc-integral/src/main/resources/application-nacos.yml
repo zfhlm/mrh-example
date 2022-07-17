@@ -1,0 +1,17 @@
+
+seata:
+  enabled: true
+  enable-auto-data-source-proxy: false
+  application-id: mrh-seata-xa-integral
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_tx_group: default
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 192.168.140.130:8848
+      application: seata-server
+      group: DEFAULT_GROUP
+      username: nacos
+      password: nacos
