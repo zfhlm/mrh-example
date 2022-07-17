@@ -2,7 +2,7 @@
 seata:
   enabled: true
   enable-auto-data-source-proxy: false
-  application-id: mrh-seata-xa-integral
+  application-id: mrh-seata-tcc-integral
   tx-service-group: default_tx_group
   service:
     vgroup-mapping:
