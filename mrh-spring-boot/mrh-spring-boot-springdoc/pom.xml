@@ -3,20 +3,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.lushen.mrh</groupId>
-	<artifactId>mrh-springdoc</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-jar-plugin.version>2.6</maven-jar-plugin.version>
-		<org.springdoc.version>1.5.13</org.springdoc.version>
-	</properties>
+	<artifactId>mrh-spring-boot-springdoc</artifactId>
+	<packaging>jar</packaging>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.0</version>
+		<groupId>org.lushen.mrh</groupId>
+		<artifactId>mrh-spring-boot-parent</artifactId>
+		<version>1.0</version>
 	</parent>
 
 	<dependencies>
@@ -24,23 +17,7 @@
 		<!-- springboot -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,17 +50,14 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-webmvc-core</artifactId>
-			<version>${org.springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-javadoc</artifactId>
-			<version>${org.springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>${org.springdoc.version}</version>
 		</dependency>
 
 		<!-- 当前版本有bug -->

@@ -28,6 +28,7 @@
 		<com.alibaba.druid.version>1.2.10</com.alibaba.druid.version>
 		<io.seata.boot.version>1.5.2</io.seata.boot.version>
 		<com.alibaba.nacos.version>1.4.1</com.alibaba.nacos.version>
+		<org.springdoc.version>1.5.13</org.springdoc.version>
 	</properties>
 
 	<dependencyManagement>
@@ -159,6 +160,21 @@
 				<groupId>com.alibaba.nacos</groupId>
 				<artifactId>nacos-api</artifactId>
 				<version>${com.alibaba.nacos.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-webmvc-core</artifactId>
+				<version>${org.springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-javadoc</artifactId>
+				<version>${org.springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-ui</artifactId>
+				<version>${org.springdoc.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
