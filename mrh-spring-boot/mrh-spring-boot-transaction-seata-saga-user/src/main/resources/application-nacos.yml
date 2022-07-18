@@ -20,3 +20,12 @@ seata:
       group: DEFAULT_GROUP
       username: nacos
       password: nacos
+  saga:
+    enabled: true
+    state-machine:
+      application-id: ${seata.application-id}
+      resources: 'classpath:statelang/*.json'
+      rm-report-success-enable: true
+      saga-branch-register-enable: true
+      saga-compensate-persist-mode-update: true
+      saga-retry-persist-mode-update: true

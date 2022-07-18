@@ -1,5 +1,7 @@
 package org.lushen.mrh.boot.seata.at.svc;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -44,6 +46,11 @@ public class IntegralService {
 		ResponseEntity<String> res = template.getForEntity("http://localhost:8888/del/"+id, String.class);
 
 		System.out.println("del integral :: res = " + res);
+
+		// 模拟错误
+		if(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE)%2 == 0) {
+			throw new RuntimeException("rollback fail");
+		}
 
 	}
 
