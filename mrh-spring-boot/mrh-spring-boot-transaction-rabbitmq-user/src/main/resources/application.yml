@@ -1,0 +1,59 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8889
+  servlet: 
+    context-path: /
+    session.timeout: 0
+
+spring: 
+  profiles:
+    active: default
+  application:
+    name: mrh-spring-boot-transaction-rabbitmq-user
+  datasource: 
+    type: org.apache.commons.dbcp2.BasicDataSource
+    url: 'jdbc:mysql://192.168.140.130:3306/user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8'
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    dbcp2: 
+      max-active: 1000
+      initial-size: 1
+      max-idle: 50
+      max-wait: 60000
+      validation-query: select 1
+      test-while-idle: true
+      test-on-borrow: false
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 1800000
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+  rabbitmq: 
+    host: 192.168.140.136
+    port: 5673
+    username: rabbitmq
+    password: 123456
+    connection-timeout: 0
+    publisher-returns: true
+    publisher-confirm-type: CORRELATED
+    listener: 
+      simple: 
+        default-requeue-rejected: false
+        retry: 
+          enabled: true
+          # 重试次数
+          max-attempts: 10
+          # 重试初始间隔时间
+          initial-interval: 1000ms
+          # 重试下一次间隔时间翻倍，即 1s 2s 4s 8s 10s 10s ...
+          multiplier: 2
+          # 重试最大间隔时间
+          max-interval: 10000ms
+
+mybatis: 
+  mapper-locations: classpath:org/lushen/mrh/boot/transaction/rabbitmq/dao/mapping/*.xml
+  type-aliases-package: org.lushen.mrh.boot.transaction.rabbitmq.dao.model
+  type-handlers-package: org.lushen.mrh.boot.transaction.rabbitmq.dao.handler
