@@ -1,0 +1,397 @@
+{
+  "nodes": [
+    {
+      "type": "node",
+      "size": "110*48",
+      "shape": "flow-capsule",
+      "color": "#722ED1",
+      "label": "撤销用户等级",
+      "stateId": "userCompensation",
+      "stateType": "Compensation",
+      "stateProps": {
+        "ServiceName": "userService",
+        "ServiceMethod": "downLevel",
+        "Input": [
+          "$.[userUpLevelResult]"
+        ]
+      },
+      "x": 223.09999084472656,
+      "y": 497,
+      "id": "82283537",
+      "index": 13
+    },
+    {
+      "type": "node",
+      "size": "72*72",
+      "shape": "flow-circle",
+      "color": "#FA8C16",
+      "label": "用户积分服务",
+      "stateId": "userIntegralService",
+      "stateType": "Start",
+      "stateProps": {
+        "StateMachine": {
+          "Name": "userIntegralService",
+          "Comment": "用户积分服务",
+          "Version": "0.0.1"
+        }
+      },
+      "x": 445.09999084472656,
+      "y": 121,
+      "id": "1da50e90",
+      "index": 14
+    },
+    {
+      "type": "node",
+      "size": "110*48",
+      "shape": "flow-rect",
+      "color": "#1890FF",
+      "label": "添加积分",
+      "stateId": "integralService",
+      "stateType": "ServiceTask",
+      "stateProps": {
+        "ServiceName": "integralService",
+        "ServiceMethod": "add",
+        "Next": "integralChoice",
+        "CompensateState": "integralCompensation",
+        "Input": [
+          "$.[quantity]"
+        ],
+        "Output": {
+          "integralAddResult": "$.#root"
+        },
+        "Status": {
+          "#root != null": "SU",
+          "#root == null": "FA",
+          "$Exception{java.lang.Throwable}": "UN"
+        },
+        "Catch": [
+          {
+            "Exceptions": [
+              "java.lang.Throwable"
+            ],
+            "Next": "integralCompensationTrigger"
+          }
+        ],
+        "Retry": []
+      },
+      "x": 444.59999084472656,
+      "y": 222,
+      "id": "cca29f63",
+      "index": 15
+    },
+    {
+      "type": "node",
+      "size": "39*39",
+      "shape": "flow-circle",
+      "color": "red",
+      "label": "异常",
+      "stateId": "integralCatch",
+      "stateType": "Catch",
+      "x": 498.59999084472656,
+      "y": 222.5,
+      "id": "9ded6069",
+      "stateProps": {},
+      "index": 16
+    },
+    {
+      "type": "node",
+      "size": "110*48",
+      "shape": "flow-capsule",
+      "color": "red",
+      "label": "添加积分失败触发器",
+      "stateId": "integralCompensationTrigger",
+      "stateType": "CompensationTrigger",
+      "x": 667.5999908447266,
+      "y": 222,
+      "id": "e63553f8",
+      "stateProps": {
+        "Next": "Fail"
+      },
+      "index": 17
+    },
+    {
+      "type": "node",
+      "size": "72*72",
+      "shape": "flow-circle",
+      "color": "red",
+      "label": "业务失败",
+      "stateId": "Fail",
+      "stateType": "Fail",
+      "stateProps": {
+        "ErrorCode": "500",
+        "Message": "用户积分服务调用失败"
+      },
+      "x": 824.5999908447266,
+      "y": 364,
+      "id": "fdfd5697",
+      "index": 18
+    },
+    {
+      "type": "node",
+      "size": "80*72",
+      "shape": "flow-rhombus",
+      "color": "#13C2C2",
+      "label": "添加积分判断",
+      "stateId": "integralChoice",
+      "stateType": "Choice",
+      "x": 445.09999084472656,
+      "y": 354.5,
+      "id": "c8fdb4fb",
+      "stateProps": {},
+      "index": 19
+    },
+    {
+      "type": "node",
+      "size": "110*48",
+      "shape": "flow-capsule",
+      "color": "#722ED1",
+      "label": "撤销积分",
+      "stateId": "integralCompensation",
+      "stateType": "Compensation",
+      "stateProps": {
+        "ServiceName": "integralService",
+        "ServiceMethod": "del",
+        "Input": [
+          "$.[integralAddResult]"
+        ]
+      },
+      "x": 222.59999084472656,
+      "y": 222.5,
+      "id": "119b04f1",
+      "index": 20
+    },
+    {
+      "type": "node",
+      "size": "72*72",
+      "shape": "flow-circle",
+      "color": "#05A465",
+      "label": "业务成功",
+      "stateId": "Succeed",
+      "stateType": "Succeed",
+      "x": 442.59999084472656,
+      "y": 764,
+      "id": "5d3a313c",
+      "index": 21
+    },
+    {
+      "type": "node",
+      "size": "110*48",
+      "shape": "flow-rect",
+      "color": "#1890FF",
+      "label": "提升用户等级",
+      "stateId": "userService",
+      "stateType": "ServiceTask",
+      "stateProps": {
+        "ServiceName": "userService",
+        "ServiceMethod": "upLevel",
+        "Next": "userChoice",
+        "CompensateState": "userCompensation",
+        "Input": [],
+        "Output": {
+          "userUpLevelResult": "$.#root"
+        },
+        "Status": {
+          "#root != null": "SU",
+          "#root == null": "FA",
+          "$Exception{java.lang.Throwable}": "UN"
+        },
+        "Catch": [
+          {
+            "Exceptions": [
+              "java.lang.Throwable"
+            ],
+            "Next": "userCompensationTrigger"
+          }
+        ],
+        "Retry": []
+      },
+      "x": 442.59999084472656,
+      "y": 497,
+      "id": "b90e7cca",
+      "index": 22
+    },
+    {
+      "type": "node",
+      "size": "80*72",
+      "shape": "flow-rhombus",
+      "color": "#13C2C2",
+      "label": "提升用户等级判断",
+      "stateId": "userChoice",
+      "stateType": "Choice",
+      "x": 442.09999084472656,
+      "y": 618.1999999284744,
+      "id": "e884e2d0",
+      "stateProps": {},
+      "index": 23
+    },
+    {
+      "type": "node",
+      "size": "110*48",
+      "shape": "flow-capsule",
+      "color": "red",
+      "label": "提升等级失败触发器",
+      "stateId": "userCompensationTrigger",
+      "stateType": "CompensationTrigger",
+      "x": 678.0999908447266,
+      "y": 499.1999999284744,
+      "id": "88659dfe",
+      "stateProps": {
+        "Next": "Fail"
+      },
+      "index": 24
+    },
+    {
+      "type": "node",
+      "size": "39*39",
+      "shape": "flow-circle",
+      "color": "red",
+      "label": "异常",
+      "stateId": "userCatch",
+      "stateType": "Catch",
+      "x": 493.09999084472656,
+      "y": 499.1999999284744,
+      "id": "3d3bb445",
+      "index": 25
+    }
+  ],
+  "edges": [
+    {
+      "source": "1da50e90",
+      "sourceAnchor": 2,
+      "target": "cca29f63",
+      "targetAnchor": 0,
+      "id": "ffa6dc06",
+      "index": 0
+    },
+    {
+      "source": "9ded6069",
+      "sourceAnchor": 1,
+      "target": "e63553f8",
+      "targetAnchor": 3,
+      "id": "3ae95f89",
+      "stateProps": {},
+      "index": 1,
+      "label": "失败",
+      "shape": "flow-smooth"
+    },
+    {
+      "source": "e63553f8",
+      "sourceAnchor": 1,
+      "target": "fdfd5697",
+      "targetAnchor": 0,
+      "id": "d8659163",
+      "label": "",
+      "shape": "flow-polyline",
+      "index": 2
+    },
+    {
+      "source": "cca29f63",
+      "sourceAnchor": 2,
+      "target": "c8fdb4fb",
+      "targetAnchor": 0,
+      "id": "3324daa7",
+      "index": 3
+    },
+    {
+      "source": "c8fdb4fb",
+      "sourceAnchor": 1,
+      "target": "e63553f8",
+      "targetAnchor": 2,
+      "id": "123769c5",
+      "stateProps": {
+        "Expression": "[integralAddResult]==null",
+        "Next": "integralCompensationTrigger"
+      },
+      "label": "失败",
+      "shape": "flow-polyline",
+      "index": 4
+    },
+    {
+      "source": "119b04f1",
+      "sourceAnchor": 1,
+      "target": "cca29f63",
+      "targetAnchor": 3,
+      "id": "46eba899",
+      "index": 5
+    },
+    {
+      "source": "c8fdb4fb",
+      "sourceAnchor": 2,
+      "target": "b90e7cca",
+      "targetAnchor": 0,
+      "id": "f30d40a9",
+      "stateProps": {
+        "Expression": "[integralAddResult]!=null",
+        "Next": "userService"
+      },
+      "label": "成功",
+      "shape": "flow-smooth",
+      "index": 6
+    },
+    {
+      "source": "b90e7cca",
+      "sourceAnchor": 2,
+      "target": "e884e2d0",
+      "targetAnchor": 0,
+      "id": "e0662ec1",
+      "index": 7
+    },
+    {
+      "source": "88659dfe",
+      "sourceAnchor": 1,
+      "target": "fdfd5697",
+      "targetAnchor": 2,
+      "id": "e2328634",
+      "label": "",
+      "shape": "flow-polyline",
+      "index": 8
+    },
+    {
+      "source": "3d3bb445",
+      "sourceAnchor": 1,
+      "target": "88659dfe",
+      "targetAnchor": 3,
+      "id": "650aaae3",
+      "stateProps": {},
+      "label": "失败",
+      "shape": "flow-smooth",
+      "index": 9
+    },
+    {
+      "source": "e884e2d0",
+      "sourceAnchor": 1,
+      "target": "88659dfe",
+      "targetAnchor": 2,
+      "id": "676067c6",
+      "stateProps": {
+        "Expression": "[userUpLevelResult]==null",
+        "Next": "userCompensationTrigger"
+      },
+      "label": "失败",
+      "shape": "flow-polyline",
+      "index": 10
+    },
+    {
+      "source": "e884e2d0",
+      "sourceAnchor": 2,
+      "target": "5d3a313c",
+      "targetAnchor": 0,
+      "id": "facb1a66",
+      "stateProps": {
+        "Expression": "[userUpLevelResult]!=null",
+        "Next": "Succeed"
+      },
+      "label": "成功",
+      "shape": "flow-smooth",
+      "index": 11
+    },
+    {
+      "source": "82283537",
+      "sourceAnchor": 1,
+      "target": "b90e7cca",
+      "targetAnchor": 3,
+      "id": "75b3d169",
+      "index": 12
+    }
+  ]
+}

@@ -48,16 +48,18 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
-		<!-- druid -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-		</dependency>
-
 		<!-- seata -->
 		<dependency>
 			<groupId>io.seata</groupId>
 			<artifactId>seata-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.nacos</groupId>
+			<artifactId>nacos-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba.nacos</groupId>
+			<artifactId>nacos-api</artifactId>
 		</dependency>
 
 		<!-- log4j2 -->

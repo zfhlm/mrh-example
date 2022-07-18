@@ -62,7 +62,7 @@
 
 	<Loggers>
 
-		<Root level="debug">
+		<Root level="info">
 			<AppenderRef ref="ConsoleAppender"/>
 			<AppenderRef ref="AsyncDebugFileAppender"/>
 			<AppenderRef ref="AsyncInfoFileAppender"/>
