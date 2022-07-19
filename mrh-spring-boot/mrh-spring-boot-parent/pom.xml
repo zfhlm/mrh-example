@@ -29,6 +29,7 @@
 		<io.seata.boot.version>1.5.2</io.seata.boot.version>
 		<com.alibaba.nacos.version>1.4.1</com.alibaba.nacos.version>
 		<org.springdoc.version>1.5.13</org.springdoc.version>
+		<org.apache.rocketmq.version>2.2.2</org.apache.rocketmq.version>
 	</properties>
 
 	<dependencyManagement>
@@ -175,6 +176,11 @@
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-ui</artifactId>
 				<version>${org.springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.rocketmq</groupId>
+				<artifactId>rocketmq-spring-boot-starter</artifactId>
+				<version>${org.apache.rocketmq.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
