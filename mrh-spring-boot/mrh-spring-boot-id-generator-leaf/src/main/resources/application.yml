@@ -1,0 +1,18 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+    session.timeout: 0
+
+spring:
+  application:
+    name: mrh-spring-boot-id-generator-leaf
+
+leaf:
+  url: http://192.168.140.130:8080/api
+  snowflake-Url: ${leaf.url}/snowflake/get/${spring.application.name}
+  segment-Url: ${leaf.url}/segment/get/${spring.application.name}

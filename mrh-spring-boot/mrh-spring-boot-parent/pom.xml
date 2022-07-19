@@ -30,10 +30,17 @@
 		<com.alibaba.nacos.version>1.4.1</com.alibaba.nacos.version>
 		<org.springdoc.version>1.5.13</org.springdoc.version>
 		<org.apache.rocketmq.version>2.2.2</org.apache.rocketmq.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<org.lushen.mrh.id-generator.version>1.0</org.lushen.mrh.id-generator.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.lushen.mrh</groupId>
+				<artifactId>mrh-id-generator</artifactId>
+				<version>${org.lushen.mrh.id-generator.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -121,6 +128,11 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons-lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba.otter</groupId>
