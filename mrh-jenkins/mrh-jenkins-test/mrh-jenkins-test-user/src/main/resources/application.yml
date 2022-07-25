@@ -1,0 +1,14 @@
+
+logging: 
+  config: classpath:log4j2-spring.xml
+
+server: 
+  port: 8888
+  servlet: 
+    context-path: /
+
+spring: 
+  application:
+    name: test
+
+

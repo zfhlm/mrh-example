@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# 常量定义
+JAR_NAME=mrh-jenkins-test-role
+JAR_VERSION=v1.0
+REGISTRY_ADDR=192.168.140.136:5000
+
+# 镜像名称
+ORIGIN_IMAGE_NAME=$JAR_NAME:$JAR_VERSION
+TAG_IMAGE_NAME=$REGISTRY_ADDR/$ORIGIN_IMAGE_NAME
+
+# 构建镜像
+docker build -t $ORIGIN_IMAGE_NAME .
+
+# 镜像上传到私库
+docker tag $ORIGIN_IMAGE_NAME $TAG_IMAGE_NAME
+docker push $TAG_IMAGE_NAME
