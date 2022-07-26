@@ -11,13 +11,14 @@ spring:
   application:
     name: mrh-apache-dubbo-service-demo
 
-
 dubbo:
   application:
     name: ${spring.application.name}
-  registry:
-    address: zookeeper://127.0.0.1:2181
   protocol:
-    dubbo.port: 20880
+    name: dubbo
+    port: 20880
+  registry:
+    id: zookeeper-registry
+    address: zookeeper://127.0.0.1:2181
 
 

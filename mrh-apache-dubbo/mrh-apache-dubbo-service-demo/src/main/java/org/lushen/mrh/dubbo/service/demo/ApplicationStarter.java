@@ -1,13 +1,13 @@
 package org.lushen.mrh.dubbo.service.demo;
 
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses=ApplicationStarter.class)
-@ImportResource(locations="classpath:dubbo.xml")
+@EnableDubbo
 public class ApplicationStarter {
 
 	public static void main(String[] args) {

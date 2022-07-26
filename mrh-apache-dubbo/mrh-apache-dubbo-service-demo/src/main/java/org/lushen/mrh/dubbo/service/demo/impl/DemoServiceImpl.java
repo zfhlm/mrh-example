@@ -4,10 +4,10 @@ import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.lushen.mrh.dubbo.reference.DemoService;
-import org.springframework.stereotype.Service;
 
-@Service("demoService")
+@DubboService
 public class DemoServiceImpl implements DemoService {
 
 	private final Log log = LogFactory.getLog(getClass());
