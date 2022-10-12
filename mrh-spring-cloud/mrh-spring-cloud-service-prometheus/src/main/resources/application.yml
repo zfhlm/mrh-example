@@ -36,16 +36,32 @@ spring:
         register: true
         root: /cloud
 
-management: 
+management:
   endpoints: 
-    jmx:
-      exposure:
-        include: "*"
+    enabled-by-default: false
     web:
       exposure:
         include: '*'
+  endpoint:
+    beans.enabled: true
+    caches.enabled: true
+    conditions.enabled: true
+    configprops.enabled: true
+    env.enabled: true
+    info.enabled: true
+    loggers.enabled: true
+    health.enabled: true
+    heapdump.enabled: true
+    threaddump.enabled: true
+    scheduledtasks.enabled: true
+    mappings.enabled: true
+    prometheus.enabled: true
+    metrics.enabled: true
+    serviceregistry.enabled: true
   metrics:
     tags: 
-      application: ${spring.application.name}
+      cluster: mrh-cluster
+      application: java
+      service: ${spring.application.name}
 
 
