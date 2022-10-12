@@ -11,14 +11,32 @@ spring:
   application:
     name: mrh-spring-boot-prometheus
 
-management: 
-   endpoints: 
-      jmx:
-         exposure:
-            include: "*"
-      web:
-         exposure:
-            include: '*'
+management:
+  endpoints: 
+    enabled-by-default: false
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    beans.enabled: true
+    caches.enabled: true
+    conditions.enabled: true
+    configprops.enabled: true
+    env.enabled: true
+    info.enabled: true
+    loggers.enabled: true
+    health.enabled: true
+    heapdump.enabled: true
+    threaddump.enabled: true
+    scheduledtasks.enabled: true
+    mappings.enabled: true
+    prometheus.enabled: true
+    metrics.enabled: true
+  metrics:
+    tags: 
+      cluster: mrh-cluster
+      application: java
+      service: ${spring.application.name}
 
 
 
