@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.lushen.test</groupId>
-	<artifactId>test</artifactId>
+	<artifactId>mrh-jenkins-test-service</artifactId>
 	<version>1.0.1.RELEASE</version>
 
 	<properties>
