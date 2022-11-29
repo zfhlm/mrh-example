@@ -10,9 +10,42 @@
 
     <parent>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-dependencies</artifactId>
+		<artifactId>spring-boot-parent</artifactId>
 		<version>2.6.9</version>
     </parent>
+
+    <modules>
+        <module>../mrh-spring-boot-admin-client</module>
+        <module>../mrh-spring-boot-admin-server</module>
+        <module>../mrh-spring-boot-cache-redis</module>
+        <module>../mrh-spring-boot-canal-client</module>
+        <module>../mrh-spring-boot-data-elasticsearch</module>
+        <module>../mrh-spring-boot-ddd</module>
+        <module>../mrh-spring-boot-elasticjob</module>
+        <module>../mrh-spring-boot-id-generator-baidu-uid</module>
+        <module>../mrh-spring-boot-id-generator-leaf</module>
+        <module>../mrh-spring-boot-id-generator-revisionid</module>
+        <module>../mrh-spring-boot-id-generator-snowflake</module>
+        <module>../mrh-spring-boot-id-generator-uuid</module>
+        <module>../mrh-spring-boot-log4j2</module>
+        <module>../mrh-spring-boot-mybatis-generator</module>
+        <module>../mrh-spring-boot-prometheus</module>
+        <module>../mrh-spring-boot-sharding-jdbc</module>
+        <module>../mrh-spring-boot-springdoc</module>
+        <module>../mrh-spring-boot-transaction-atomikos</module>
+        <module>../mrh-spring-boot-transaction-rabbitmq-integral</module>
+        <module>../mrh-spring-boot-transaction-rabbitmq-user</module>
+        <module>../mrh-spring-boot-transaction-rocketmq-integral</module>
+        <module>../mrh-spring-boot-transaction-rocketmq-user</module>
+        <module>../mrh-spring-boot-transaction-seata-at-integral</module>
+        <module>../mrh-spring-boot-transaction-seata-at-user</module>
+        <module>../mrh-spring-boot-transaction-seata-saga-integral</module>
+        <module>../mrh-spring-boot-transaction-seata-saga-user</module>
+        <module>../mrh-spring-boot-transaction-seata-tcc-integral</module>
+        <module>../mrh-spring-boot-transaction-seata-tcc-user</module>
+        <module>../mrh-spring-boot-transaction-seata-xa-integral</module>
+        <module>../mrh-spring-boot-transaction-seata-xa-user</module>
+    </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,13 +79,6 @@
 				<groupId>org.lushen.mrh</groupId>
 				<artifactId>mrh-id-generator</artifactId>
 				<version>${org.lushen.mrh.id-generator.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring.boot-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
